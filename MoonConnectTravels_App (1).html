@@ -1,0 +1,1753 @@
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moon Connect Travels</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+:root{--mid:#07111f;--deep:#0b1828;--panel:#101f33;--card:#162540;--bdr:rgba(80,140,255,0.13);--gold:#f0c060;--gld2:#e8a830;--sky:#5ba4f5;--sky2:#3080e8;--moon:#e8dfc8;--txt:#b8ccee;--mut:#567;--wht:#e8f0ff;--glow:rgba(91,164,245,0.18);--gglow:rgba(240,192,96,0.22);--grn:#27ae60;--red:#e74c3c}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--mid);color:var(--txt);overflow:hidden}
+/* BG */
+#bg-img{position:fixed;inset:0;z-index:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.4s ease,background-image 0.5s}
+#bg-ov{position:fixed;inset:0;z-index:1;background:linear-gradient(180deg,rgba(7,17,31,0.78) 0%,rgba(7,17,31,0.5) 40%,rgba(7,17,31,0.88) 100%)}
+#stars{position:fixed;inset:0;z-index:1;pointer-events:none}
+#stars::before{content:'';position:absolute;inset:0;background-image:
+  radial-gradient(1px 1px at 7% 11%,rgba(255,255,255,0.8) 0%,transparent 100%),
+  radial-gradient(1px 1px at 21% 37%,rgba(255,255,255,0.5) 0%,transparent 100%),
+  radial-gradient(1.5px 1.5px at 57% 7%,rgba(255,255,255,0.9) 0%,transparent 100%),
+  radial-gradient(1px 1px at 72% 51%,rgba(255,255,255,0.4) 0%,transparent 100%),
+  radial-gradient(1px 1px at 89% 17%,rgba(255,255,255,0.6) 0%,transparent 100%),
+  radial-gradient(1px 1px at 37% 77%,rgba(255,255,255,0.5) 0%,transparent 100%),
+  radial-gradient(1.5px 1.5px at 3% 61%,rgba(255,255,255,0.7) 0%,transparent 100%),
+  radial-gradient(1px 1px at 81% 81%,rgba(255,255,255,0.35) 0%,transparent 100%),
+  radial-gradient(1px 1px at 47% 47%,rgba(255,255,255,0.6) 0%,transparent 100%),
+  radial-gradient(1px 1px at 61% 29%,rgba(255,255,255,0.4) 0%,transparent 100%),
+  radial-gradient(1px 1px at 14% 84%,rgba(255,255,255,0.55) 0%,transparent 100%),
+  radial-gradient(1px 1px at 93% 43%,rgba(255,255,255,0.45) 0%,transparent 100%),
+  radial-gradient(1px 1px at 33% 55%,rgba(255,255,255,0.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 66% 88%,rgba(255,255,255,0.4) 0%,transparent 100%)}
+/* LAYOUT */
+#app{position:relative;z-index:2;display:grid;grid-template-columns:230px 1fr;grid-template-rows:60px 1fr;height:100vh;overflow:hidden}
+/* HEADER */
+#hdr{grid-column:1/-1;background:rgba(5,12,24,0.93);border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;padding:0 16px;backdrop-filter:blur(16px)}
+.logo{display:flex;align-items:center;gap:9px}
+.logo-moon{width:32px;height:32px;background:radial-gradient(circle at 35% 35%,var(--moon),var(--gld2));border-radius:50%;box-shadow:0 0 18px var(--gglow),inset -4px -2px 0 rgba(0,0,0,0.32);flex-shrink:0}
+.logo-text{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;background:linear-gradient(135deg,var(--moon),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-sub{font-size:9px;color:var(--mut);letter-spacing:2px;text-transform:uppercase}
+.hdr-r{display:flex;align-items:center;gap:9px}
+.badge{background:linear-gradient(135deg,var(--sky2),#1850c0);color:#fff;font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px}
+#dl-btn{background:linear-gradient(135deg,var(--gold),var(--gld2));color:#1a0800;font-size:11px;font-weight:700;padding:6px 13px;border-radius:8px;border:none;cursor:pointer;transition:all .2s}
+#dl-btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px var(--gglow)}
+/* SIDEBAR */
+#sb{background:rgba(8,16,32,0.9);border-right:1px solid var(--bdr);display:flex;flex-direction:column;overflow:hidden;backdrop-filter:blur(10px)}
+.sb-s{padding:11px 13px;border-bottom:1px solid var(--bdr)}
+.sb-t{font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--mut);margin-bottom:7px}
+.nb{width:100%;text-align:left;background:transparent;border:none;cursor:pointer;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 9px;border-radius:7px;display:flex;align-items:center;gap:8px;transition:all .15s;margin-bottom:2px}
+.nb:hover{background:var(--card)}
+.nb.active{background:var(--glow);color:var(--sky);border:1px solid rgba(91,164,245,0.2)}
+.ni{font-size:13px;width:17px;text-align:center}
+.dl{display:flex;flex-direction:column;gap:4px;overflow-y:auto;flex:1;padding:9px 11px;scrollbar-width:thin;scrollbar-color:var(--panel) transparent}
+.dc{background:var(--card);border:1px solid var(--bdr);border-radius:7px;padding:6px 9px;cursor:pointer;font-size:11px;transition:all .15s;display:flex;align-items:center;gap:6px}
+.dc:hover{border-color:var(--sky);transform:translateX(2px)}
+.dc .dn{color:var(--wht);font-weight:500;font-size:11px}
+.dc .dp{color:var(--gold);font-size:10px}
+/* MAIN */
+#main{display:flex;flex-direction:column;overflow:hidden}
+#tabbar{display:flex;border-bottom:1px solid var(--bdr);background:rgba(8,16,32,0.88);padding:0 12px;flex-shrink:0;overflow-x:auto;scrollbar-width:none;backdrop-filter:blur(10px)}
+#tabbar::-webkit-scrollbar{display:none}
+.tab{background:none;border:none;cursor:pointer;color:var(--mut);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;padding:12px 13px;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
+.tab:hover{color:var(--txt)}
+.tab.active{color:var(--sky);border-bottom-color:var(--sky)}
+.panel{display:none;flex-direction:column;flex:1;overflow:hidden}
+.panel.active{display:flex}
+.si{flex:1;overflow-y:auto;padding:14px;scrollbar-width:thin;scrollbar-color:var(--panel) transparent}
+.pt{font-family:'Playfair Display',serif;font-size:19px;color:var(--wht);margin-bottom:2px}
+.ps{font-size:11px;color:var(--mut);margin-bottom:14px}
+/* DEST GRID */
+.dg{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:13px}
+.dcard{background:var(--card);border:1px solid var(--bdr);border-radius:13px;overflow:hidden;cursor:pointer;transition:all .25s;position:relative}
+.dcard:hover{transform:translateY(-5px);border-color:rgba(91,164,245,0.5);box-shadow:0 14px 40px rgba(0,0,0,0.55)}
+.dphoto{height:145px;position:relative;overflow:hidden;background:var(--panel)}
+.dphoto img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease;display:block}
+.dcard:hover .dphoto img{transform:scale(1.08)}
+.dphoto-ov{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,0.72) 100%)}
+.dphoto-em{position:absolute;top:8px;right:8px;font-size:20px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.6))}
+.dphoto-price{position:absolute;bottom:8px;left:10px;color:#fff;font-weight:700;font-size:13px;text-shadow:0 1px 4px rgba(0,0,0,0.9)}
+.dphoto-nights{position:absolute;bottom:8px;right:9px;background:rgba(0,0,0,0.65);color:var(--gold);font-size:9px;padding:2px 6px;border-radius:9px}
+.dbody{padding:10px 12px}
+.dname{font-family:'Playfair Display',serif;font-size:14px;color:var(--wht);margin-bottom:1px}
+.dcountry{font-size:10px;color:var(--mut);margin-bottom:6px}
+.dtags{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:8px}
+.dtag{background:var(--panel);font-size:9px;color:var(--sky);padding:1px 6px;border-radius:18px;border:1px solid rgba(91,164,245,0.18)}
+.dfooter{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.aibtn{background:var(--glow);border:1px solid rgba(91,164,245,0.3);color:var(--sky);font-size:9px;font-family:'DM Sans',sans-serif;padding:4px 9px;border-radius:6px;cursor:pointer}
+.bkbtn{background:linear-gradient(135deg,var(--gold),var(--gld2));border:none;color:#1a0800;font-size:9px;font-family:'DM Sans',sans-serif;font-weight:700;padding:4px 9px;border-radius:6px;cursor:pointer}
+/* FLIGHT */
+.fsbox{background:rgba(10,20,40,0.95);border:1px solid var(--bdr);border-radius:14px;padding:18px;margin-bottom:14px;backdrop-filter:blur(10px)}
+.ttog{display:flex;gap:7px;margin-bottom:14px}
+.ttb{background:var(--card);border:1px solid var(--bdr);color:var(--mut);font-family:'DM Sans',sans-serif;font-size:11px;padding:5px 13px;border-radius:20px;cursor:pointer;transition:all .15s}
+.ttb.active{background:var(--glow);border-color:var(--sky);color:var(--sky)}
+.frow{display:grid;grid-template-columns:1fr 34px 1fr 1fr;gap:9px;align-items:end;margin-bottom:10px}
+.frow2{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:9px;align-items:end}
+.fi{display:flex;flex-direction:column;gap:4px}
+.fi label{font-size:9px;color:var(--mut);font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.fi input,.fi select{background:var(--card);border:1px solid var(--bdr);color:var(--wht);font-family:'DM Sans',sans-serif;font-size:12px;padding:8px 11px;border-radius:8px;outline:none;transition:border-color .15s;width:100%}
+.fi input:focus,.fi select:focus{border-color:var(--sky)}
+.fi select option{background:var(--deep)}
+.swpbtn{background:var(--panel);border:1px solid var(--bdr);color:var(--sky);height:36px;border-radius:8px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s;align-self:end}
+.swpbtn:hover{background:var(--glow);transform:rotate(180deg)}
+.sbtn{background:linear-gradient(135deg,var(--sky2),#1445b0);border:none;color:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;padding:9px 20px;border-radius:8px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.sbtn:hover{transform:translateY(-1px);box-shadow:0 4px 14px var(--glow)}
+/* Flight results */
+.fres{display:flex;flex-direction:column;gap:9px}
+.fcard{background:rgba(12,22,42,0.92);border:1px solid var(--bdr);border-radius:11px;padding:13px 15px;display:flex;align-items:center;gap:14px;transition:all .2s;cursor:pointer}
+.fcard:hover{border-color:rgba(91,164,245,0.4);box-shadow:0 4px 18px var(--glow)}
+.alogo{width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.frt{flex:1}
+.ftimes{display:flex;align-items:center;gap:7px;margin-bottom:2px}
+.fdep,.farr{font-size:15px;font-weight:700;color:var(--wht)}
+.fline{flex:1;display:flex;flex-direction:column;align-items:center}
+.fline-bar{height:1px;background:var(--bdr);width:100%;position:relative}
+.fline-bar::after{content:'✈';position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--sky)}
+.fdur{font-size:9px;color:var(--mut);margin-bottom:2px}
+.fstops{font-size:9px}
+.fcities{font-size:10px;color:var(--mut);margin-top:2px}
+.fpbox{text-align:right;flex-shrink:0}
+.fprice{font-size:17px;font-weight:700;color:var(--gold)}
+.fper{font-size:9px;color:var(--mut)}
+.fbookbtn{background:linear-gradient(135deg,var(--gold),var(--gld2));border:none;color:#1a0800;font-size:10px;font-weight:700;font-family:'DM Sans',sans-serif;padding:5px 12px;border-radius:6px;cursor:pointer;margin-top:4px;display:block}
+/* HOTEL */
+.hsbox{background:rgba(10,20,40,0.95);border:1px solid var(--bdr);border-radius:14px;padding:18px;margin-bottom:14px;backdrop-filter:blur(10px)}
+.hrow{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr auto;gap:9px;align-items:end;margin-bottom:10px}
+.hrow2{display:flex;gap:9px;flex-wrap:wrap;align-items:end}
+.hgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:13px}
+.hcard{background:rgba(12,22,42,0.92);border:1px solid var(--bdr);border-radius:13px;overflow:hidden;transition:all .25s;cursor:pointer}
+.hcard:hover{transform:translateY(-4px);border-color:rgba(91,164,245,0.4);box-shadow:0 10px 28px rgba(0,0,0,0.45)}
+.hphoto{height:125px;position:relative;overflow:hidden;background:var(--panel)}
+.hphoto img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.hcard:hover .hphoto img{transform:scale(1.08)}
+.hstars{position:absolute;top:7px;left:7px;background:rgba(0,0,0,0.65);padding:2px 7px;border-radius:9px;font-size:10px}
+.hbadge{position:absolute;top:7px;right:7px;background:var(--grn);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:9px}
+.hbody{padding:11px 12px}
+.hname{font-size:13px;font-weight:600;color:var(--wht);margin-bottom:1px}
+.hloc{font-size:10px;color:var(--mut);margin-bottom:5px}
+.hams{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:7px}
+.ham{font-size:9px;background:var(--panel);color:var(--txt);padding:1px 5px;border-radius:7px}
+.hfoot{display:flex;justify-content:space-between;align-items:center}
+.hprice{font-size:14px;font-weight:700;color:var(--gold)}
+.hper{font-size:9px;color:var(--mut)}
+.hbookbtn{background:linear-gradient(135deg,var(--sky2),#1445b0);border:none;color:#fff;font-size:10px;font-weight:700;font-family:'DM Sans',sans-serif;padding:5px 11px;border-radius:6px;cursor:pointer}
+/* PACKAGE BUILDER */
+.pb{display:grid;grid-template-columns:1fr 310px;gap:14px;min-height:0}
+.psteps{display:flex;flex-direction:column;gap:10px}
+.scard{background:rgba(12,22,42,0.92);border:1px solid var(--bdr);border-radius:13px;padding:14px;transition:border-color .2s}
+.scard.done-step{border-color:rgba(39,174,96,0.3)}
+.shead{display:flex;align-items:center;gap:9px;margin-bottom:11px}
+.snum{width:24px;height:24px;border-radius:50%;background:var(--glow);border:1px solid var(--sky);color:var(--sky);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.snum.done{background:linear-gradient(135deg,var(--grn),#1e8449);border-color:var(--grn);color:#fff}
+.stitle{font-size:12px;font-weight:600;color:var(--wht)}
+.ogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:7px}
+.obtn{background:var(--card);border:1px solid var(--bdr);border-radius:9px;padding:9px 7px;cursor:pointer;text-align:center;transition:all .2s;font-family:'DM Sans',sans-serif}
+.obtn:hover{border-color:var(--gold);background:rgba(240,192,96,0.06)}
+.obtn.sel{border-color:var(--gold);background:rgba(240,192,96,0.1);box-shadow:0 0 10px rgba(240,192,96,0.15)}
+.oem{font-size:20px;margin-bottom:3px}
+.oname{font-size:10px;color:var(--wht);font-weight:500}
+.osub{font-size:9px;color:var(--gold);margin-top:1px}
+/* SUMMARY */
+.psum{background:rgba(10,20,40,0.97);border:1px solid var(--bdr);border-radius:13px;padding:16px;position:sticky;top:0;display:flex;flex-direction:column;backdrop-filter:blur(10px);overflow-y:auto;max-height:calc(100vh - 120px)}
+.sum-title{font-family:'Playfair Display',serif;font-size:15px;color:var(--wht);margin-bottom:10px;padding-bottom:9px;border-bottom:1px solid var(--bdr)}
+.sum-img{width:100%;height:85px;object-fit:cover;border-radius:8px;margin-bottom:10px}
+.sum-ph{width:100%;height:85px;border-radius:8px;margin-bottom:10px;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:34px}
+.srow{display:flex;justify-content:space-between;align-items:flex-start;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:11px}
+.sk{color:var(--mut)}.sv{color:var(--wht);font-weight:500;text-align:right;max-width:55%;font-size:10px}
+.stot{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--bdr)}
+.stot-l{font-size:12px;color:var(--mut)}.stot-v{font-size:20px;font-weight:700;color:var(--gold)}
+.cfbtn{background:linear-gradient(135deg,var(--gold),var(--gld2));border:none;color:#1a0800;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;padding:12px;border-radius:10px;cursor:pointer;margin-top:12px;transition:all .2s;width:100%}
+.cfbtn:hover{transform:translateY(-2px);box-shadow:0 5px 20px var(--gglow)}
+/* CHAT */
+#chatmsgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin;scrollbar-color:var(--panel) transparent}
+.msg{display:flex;gap:9px;max-width:82%;animation:fadeUp .3s ease}
+.msg.user{flex-direction:row-reverse;margin-left:auto}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.av{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px}
+.av.ai{background:linear-gradient(135deg,var(--sky2),#1850c0);box-shadow:0 0 9px rgba(91,164,245,0.3)}
+.av.user{background:linear-gradient(135deg,var(--gold),var(--gld2))}
+.bub{background:var(--card);border:1px solid var(--bdr);border-radius:13px;padding:9px 13px;font-size:12px;line-height:1.6;max-width:100%}
+.bub.user{background:linear-gradient(135deg,var(--sky2),#1445b0);border-color:transparent;color:#fff}
+.bub h4{color:var(--gold);margin-bottom:5px;font-size:12px}
+.bub strong{color:var(--sky)}
+.bub.user strong{color:#cde}
+.typing{display:flex;align-items:center;gap:4px;padding:2px 0}
+.typing span{width:5px;height:5px;border-radius:50%;background:var(--sky);animation:bnc 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+@keyframes bnc{0%,80%,100%{transform:scale(0.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+#chatinp{padding:11px 14px;background:rgba(8,16,32,0.9);border-top:1px solid var(--bdr);flex-shrink:0;backdrop-filter:blur(10px)}
+.qbtns{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px}
+.qb{background:var(--card);border:1px solid var(--bdr);color:var(--txt);font-size:10px;font-family:'DM Sans',sans-serif;padding:4px 9px;border-radius:20px;cursor:pointer;transition:all .15s}
+.qb:hover{border-color:var(--sky);color:var(--sky)}
+.inrow{display:flex;gap:7px;align-items:flex-end}
+#ci{flex:1;background:var(--card);border:1px solid var(--bdr);border-radius:9px;color:var(--wht);font-family:'DM Sans',sans-serif;font-size:12px;padding:9px 12px;resize:none;outline:none;transition:border-color .15s;max-height:90px;min-height:38px}
+#ci:focus{border-color:var(--sky)}
+#sb2{background:linear-gradient(135deg,var(--sky2),#1445b0);border:none;border-radius:9px;width:38px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all .15s;flex-shrink:0}
+#sb2:hover{transform:scale(1.06);box-shadow:0 4px 12px var(--glow)}
+#sb2:disabled{opacity:.4;cursor:not-allowed;transform:none}
+/* BOOKING FORM */
+.bgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.fg{display:flex;flex-direction:column;gap:4px}
+.fg.full{grid-column:1/-1}
+.fl{font-size:10px;color:var(--mut);font-weight:500;letter-spacing:.5px}
+.fi2,.fs2,.ft2{background:var(--card);border:1px solid var(--bdr);color:var(--wht);font-family:'DM Sans',sans-serif;font-size:12px;padding:9px 12px;border-radius:8px;outline:none;transition:border-color .15s}
+.fi2:focus,.fs2:focus,.ft2:focus{border-color:var(--sky)}
+.fs2 option{background:var(--deep)}
+.ft2{resize:vertical;min-height:70px}
+.subbtn{background:linear-gradient(135deg,var(--gold),var(--gld2));color:#1a0800;font-weight:700;font-size:12px;font-family:'DM Sans',sans-serif;border:none;border-radius:9px;padding:12px 26px;cursor:pointer;margin-top:14px;transition:all .2s}
+.subbtn:hover{transform:translateY(-2px);box-shadow:0 5px 18px var(--gglow)}
+/* PACKAGES */
+.pklist{display:flex;flex-direction:column;gap:11px}
+.pkcard{background:rgba(12,22,42,0.92);border:1px solid var(--bdr);border-radius:13px;padding:16px;display:flex;gap:14px;transition:all .2s}
+.pkcard:hover{border-color:var(--gold);box-shadow:0 4px 18px var(--gglow)}
+.pkico{font-size:34px;width:50px;text-align:center;flex-shrink:0}
+.pkinfo{flex:1}
+.pkname{font-family:'Playfair Display',serif;font-size:15px;color:var(--wht);margin-bottom:4px}
+.pkdesc{font-size:11px;color:var(--mut);line-height:1.5;margin-bottom:7px}
+.pkfeats{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+.pkf{background:var(--panel);font-size:9px;color:var(--txt);padding:2px 7px;border-radius:18px}
+.pkfoot{display:flex;justify-content:space-between;align-items:center}
+.pkprice{font-size:16px;font-weight:700;color:var(--gold)}
+.pkper{font-size:9px;color:var(--mut)}
+.pkbtn{background:linear-gradient(135deg,var(--sky2),#1445b0);color:#fff;font-size:10px;font-weight:600;font-family:'DM Sans',sans-serif;border:none;border-radius:7px;padding:6px 14px;cursor:pointer}
+/* BOT */
+#fab{position:fixed;bottom:22px;right:22px;z-index:9999;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gld2));border:none;cursor:pointer;box-shadow:0 4px 20px rgba(240,192,96,0.5);display:flex;align-items:center;justify-content:center;font-size:22px;transition:transform .2s;animation:fpulse 2.5s infinite;position:fixed}
+#fab:hover{transform:scale(1.1)}
+#fab.open{animation:none;background:linear-gradient(135deg,var(--sky2),#1445b0)}
+@keyframes fpulse{0%,100%{box-shadow:0 4px 20px rgba(240,192,96,0.5),0 0 0 0 rgba(240,192,96,0.35)}60%{box-shadow:0 4px 20px rgba(240,192,96,0.5),0 0 0 11px rgba(240,192,96,0)}}
+#botwin{position:fixed;bottom:86px;right:22px;z-index:9998;width:320px;height:480px;background:rgba(9,17,33,0.97);border:1px solid var(--bdr);border-radius:17px;display:flex;flex-direction:column;box-shadow:0 20px 55px rgba(0,0,0,0.65);transform:scale(0.85) translateY(20px);opacity:0;pointer-events:none;transition:all .3s cubic-bezier(0.34,1.56,0.64,1);overflow:hidden;backdrop-filter:blur(20px)}
+#botwin.open{transform:scale(1) translateY(0);opacity:1;pointer-events:all}
+#bothdr{background:linear-gradient(135deg,#0c1c3a,#142040);padding:12px 13px;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--bdr);flex-shrink:0}
+.bav{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--sky2),#1445b0);display:flex;align-items:center;justify-content:center;font-size:17px;position:relative;box-shadow:0 0 10px rgba(91,164,245,0.35)}
+.bonline{position:absolute;bottom:1px;right:1px;width:8px;height:8px;border-radius:50%;background:var(--grn);border:2px solid var(--deep)}
+.binfo{flex:1}
+.bname{color:var(--wht);font-weight:600;font-size:12px}
+.bstat{color:var(--grn);font-size:10px}
+.bstat::before{content:'● ';font-size:7px}
+#botcls{background:rgba(255,255,255,0.07);border:none;color:var(--mut);width:25px;height:25px;border-radius:7px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center}
+#botcls:hover{background:rgba(255,255,255,0.13);color:var(--wht)}
+#botmsgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:9px;scrollbar-width:thin;scrollbar-color:var(--panel) transparent}
+.bmsg{display:flex;gap:6px;animation:bfade .25s ease}
+.bmsg.buser{flex-direction:row-reverse}
+@keyframes bfade{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.bico{width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px}
+.bico.ai{background:linear-gradient(135deg,var(--sky2),#1445b0)}
+.bico.usr{background:linear-gradient(135deg,var(--gold),var(--gld2))}
+.bbub{background:var(--card);border:1px solid var(--bdr);border-radius:11px;padding:7px 11px;font-size:11px;line-height:1.5;max-width:82%;word-break:break-word}
+.bbub.ubub{background:linear-gradient(135deg,var(--sky2),#1445b0);border-color:transparent;color:#fff}
+.bbub strong{color:var(--sky)}
+.bbub.ubub strong{color:#cde}
+.btyp{display:flex;align-items:center;gap:4px;padding:1px 0}
+.btyp span{width:5px;height:5px;border-radius:50%;background:var(--sky);animation:bnc 1.2s infinite}
+.btyp span:nth-child(2){animation-delay:.2s}.btyp span:nth-child(3){animation-delay:.4s}
+#botq{display:flex;flex-wrap:wrap;gap:4px;padding:6px 11px 0;flex-shrink:0}
+.bqb{background:var(--card);border:1px solid var(--bdr);color:var(--txt);font-size:10px;font-family:'DM Sans',sans-serif;padding:3px 8px;border-radius:18px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.bqb:hover{border-color:var(--gold);color:var(--gold)}
+#botinrow{display:flex;gap:6px;align-items:center;padding:9px 11px;border-top:1px solid var(--bdr);background:var(--panel);flex-shrink:0}
+#botin{flex:1;background:var(--card);border:1px solid var(--bdr);color:var(--wht);font-family:'DM Sans',sans-serif;font-size:11px;padding:7px 11px;border-radius:8px;outline:none;transition:border-color .15s}
+#botin:focus{border-color:var(--sky)}
+#botsnd{background:linear-gradient(135deg,var(--gold),var(--gld2));border:none;border-radius:8px;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:#1a0800;font-weight:bold}
+#botsnd:disabled{opacity:.4;cursor:not-allowed}
+.unread{position:absolute;top:-3px;right:-3px;background:var(--red);color:#fff;font-size:9px;font-weight:700;width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--mid)}
+/* MODAL */
+#movl{position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,0.75);backdrop-filter:blur(7px);display:none;align-items:center;justify-content:center}
+#movl.open{display:flex}
+#mod{background:var(--deep);border:1px solid var(--bdr);border-radius:16px;padding:24px;max-width:420px;width:90%;box-shadow:0 20px 55px rgba(0,0,0,0.65);animation:modIn .3s cubic-bezier(0.34,1.56,0.64,1)}
+@keyframes modIn{from{transform:scale(0.85);opacity:0}to{transform:scale(1);opacity:1}}
+#mod h3{font-family:'Playfair Display',serif;color:var(--wht);margin-bottom:5px;font-size:17px}
+#mod p{color:var(--mut);font-size:11px;margin-bottom:14px;line-height:1.6}
+.mrows{display:flex;flex-direction:column;gap:0;margin-bottom:16px}
+.mrow{display:flex;justify-content:space-between;font-size:11px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.mrow:last-child{border-bottom:none;font-weight:700;font-size:13px}
+.mrow span:last-child{color:var(--gold)}
+.mbtns{display:flex;gap:9px}
+.mcanc{flex:1;background:var(--card);border:1px solid var(--bdr);color:var(--mut);font-family:'DM Sans',sans-serif;font-size:11px;padding:9px;border-radius:8px;cursor:pointer}
+.mconf{flex:2;background:linear-gradient(135deg,var(--gold),var(--gld2));border:none;color:#1a0800;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;padding:9px;border-radius:8px;cursor:pointer}
+.mconf:hover{transform:translateY(-1px);box-shadow:0 4px 14px var(--gglow)}
+/* TOAST */
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(70px);z-index:10000;background:var(--card);border:1px solid var(--bdr);border-radius:11px;padding:11px 18px;display:flex;align-items:center;gap:9px;box-shadow:0 8px 28px rgba(0,0,0,0.4);opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.ti{font-size:16px}.tt{font-size:11px;color:var(--txt)}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--panel);border-radius:10px}
+</style>
+</head>
+<body>
+<div id="bg-img" style="background-image: url(&quot;https://images.unsplash.com/photo-1488085061387-422e29b40080?w=1400&amp;q=50&quot;); opacity: 0;"></div>
+<div id="bg-ov"></div>
+<div id="stars"></div>
+<div id="app">
+
+<!-- HEADER -->
+<header id="hdr">
+  <div class="logo">
+    <div class="logo-moon"></div>
+    <div><div class="logo-text">Moon Connect Travels</div><div class="logo-sub">Your Complete Travel Partner</div></div>
+  </div>
+  <div class="hdr-r">
+    <div class="badge">✦ AI Powered</div>
+    <button id="dl-btn" onclick="dlApp()">⬇ Download App</button>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<aside id="sb">
+  <div class="sb-s">
+    <div class="sb-t">Menu</div>
+    <button class="nb active" onclick="goTab('chat',this)"><span class="ni">💬</span>AI Assistant</button>
+    <button class="nb" onclick="goTab('dest',this)"><span class="ni">🌍</span>Destinations</button>
+    <button class="nb" onclick="goTab('flights',this)"><span class="ni">✈️</span>Flight Booking</button>
+    <button class="nb" onclick="goTab('hotels',this)"><span class="ni">🏨</span>Hotel Search</button>
+    <button class="nb" onclick="goTab('customize',this)"><span class="ni">🎨</span>Build My Package</button>
+    <button class="nb" onclick="goTab('pkg',this)"><span class="ni">✨</span>Packages</button>
+    <button class="nb" onclick="goTab('book',this)"><span class="ni">📋</span>Book a Trip</button>
+  </div>
+  <div class="sb-s" style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+    <div class="sb-t">Top Destinations</div>
+    <div class="dl" id="sbdl"><div class="dc" onclick="abt('Goa')"><span class="flag">🏖️</span><div><div class="dn">Goa</div><div class="dp">From ₹15,000</div></div></div><div class="dc" onclick="abt('Maldives')"><span class="flag">🐠</span><div><div class="dn">Maldives</div><div class="dp">From ₹65,000</div></div></div><div class="dc" onclick="abt('Bali')"><span class="flag">🌺</span><div><div class="dn">Bali</div><div class="dp">From ₹45,000</div></div></div><div class="dc" onclick="abt('Manali')"><span class="flag">🏔️</span><div><div class="dn">Manali</div><div class="dp">From ₹12,000</div></div></div><div class="dc" onclick="abt('Dubai')"><span class="flag">🏙️</span><div><div class="dn">Dubai</div><div class="dp">From ₹55,000</div></div></div><div class="dc" onclick="abt('Singapore')"><span class="flag">🗼</span><div><div class="dn">Singapore</div><div class="dp">From ₹50,000</div></div></div><div class="dc" onclick="abt('Japan')"><span class="flag">⛩️</span><div><div class="dn">Japan</div><div class="dp">From ₹1,20,000</div></div></div><div class="dc" onclick="abt('Kerala')"><span class="flag">🌴</span><div><div class="dn">Kerala</div><div class="dp">From ₹20,000</div></div></div></div>
+  </div>
+  <div class="sb-s" style="text-align:center;padding:10px">
+    <div style="font-size:10px;color:var(--mut)">📞 +91 98765 43210</div>
+    <div style="font-size:10px;color:var(--mut);margin-top:2px">✉ info@moonconnecttravels.com</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main id="main">
+  <div id="tabbar">
+    <button class="tab active" data-t="chat" onclick="goTab('chat',null,this)">💬 Chat</button>
+    <button class="tab" data-t="dest" onclick="goTab('dest',null,this)">🌍 Destinations</button>
+    <button class="tab" data-t="flights" onclick="goTab('flights',null,this)">✈️ Flights</button>
+    <button class="tab" data-t="hotels" onclick="goTab('hotels',null,this)">🏨 Hotels</button>
+    <button class="tab" data-t="customize" onclick="goTab('customize',null,this)">🎨 Build Package</button>
+    <button class="tab" data-t="pkg" onclick="goTab('pkg',null,this)">✨ Packages</button>
+    <button class="tab" data-t="book" onclick="goTab('book',null,this)">📋 Book</button>
+  </div>
+
+  <!-- CHAT -->
+  <div class="panel active" id="chat-panel">
+    <div id="chatmsgs"><div class="msg"><div class="av ai">🌙</div><div class="bub"><h4>🌙 Moon Connect Travels mein Swagat hai!</h4>
+Main <strong>Luna</strong> hoon — aapka AI Travel Assistant!<br><br>
+Aaj ke nayi features:<br>
+✈️ <strong>Flight Booking</strong> — khud search karo &amp; book karo<br>
+🏨 <strong>Hotel Search</strong> — real photos ke saath compare &amp; book<br>
+🎨 <strong>Build My Package</strong> — apna package 100% customize karo<br>
+🌍 <strong>12 Destinations</strong> — real beach &amp; hotel photos<br><br>
+Kahan jaana chahte ho? 🌟</div></div></div>
+    <div id="chatinp">
+      <div class="qbtns">
+        <button class="qb" onclick="qa('Best honeymoon destinations?')">💑 Honeymoon</button>
+        <button class="qb" onclick="qa('Budget trips under ₹25,000?')">💰 Budget</button>
+        <button class="qb" onclick="qa('Best places in India?')">🇮🇳 India</button>
+        <button class="qb" onclick="qa('International packages?')">✈️ International</button>
+        <button class="qb" onclick="qa('Adventure trips?')">🏔️ Adventure</button>
+        <button class="qb" onclick="qa('Visa for Dubai?')">🛂 Visa</button>
+      </div>
+      <div class="inrow">
+        <textarea id="ci" rows="1" placeholder="Ask Luna anything about travel…" onkeydown="hkey(event)"></textarea>
+        <button id="sb2" onclick="sendMsg()">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESTINATIONS -->
+  <div class="panel" id="dest-panel">
+    <div class="si">
+      <div class="pt">🌍 Explore Destinations</div>
+      <div class="ps">Tap any destination to learn more — real photos with prices</div>
+      <div class="dg" id="destgrid">
+  <div class="dcard" onclick="abt('Goa')">
+   <div class="dphoto" style="background:linear-gradient(135deg,#0d3b6e,#1a6fa8)">
+    <img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=500&amp;q=80" alt="Goa" onerror="this.style.display='none'">
+    <div class="dphoto-ov"></div>
+    <div class="dphoto-em">🏖️</div>
+    <div class="dphoto-price">₹15,000</div>
+    <div class="dphoto-nights">4N/5D</div>
+   </div>
+   <div class="dbody">
+    <div class="dname">Goa</div>
+    <div class="dcountry">📍 India · Best: Nov–Mar</div>
+    <div class="dtags"><span class="dtag">Beach</span><span class="dtag">Nightlife</span><span class="dtag">Water Sports</span></div>
+    <div class="dfooter">
+     <button class="aibtn" onclick="event.stopPropagation();abt('Goa')">Ask Luna ✦</button>
+     <button class="bkbtn" onclick="event.stopPropagation();goBk('Goa')">Book Now</button>
+    </div>
+   </div>
+  </div>
+  <div class="dcard" onclick="abt('Rajasthan')">
+   <div class="dphoto" style="background:linear-gradient(135deg,#7d3c13,#c47a1a)">
+    <img src="https://images.unsplash.com/photo-1477587458883-47145ed94245?w=500&amp;q=80" alt="Rajasthan" onerror="this.style.display='none'">
+    <div class="dphoto-ov"></div>
+    <div class="dphoto-em">🏰</div>
+    <div class="dphoto-price">₹18,000</div>
+    <div class="dphoto-nights">5N/6D</div>
+   </div>
+   <div class="dbody">
+    <div class="dname">Rajasthan</div>
+    <div class="dcountry">📍 India · Best: Oct–Mar</div>
+    <div class="dtags"><span class="dtag">Heritage</span><span class="dtag">Desert</span><span class="dtag">Culture</span></div>
+    <div class="dfooter">
+     <button class="aibtn" onclick="event.stopPropagation();abt('Rajasthan')">Ask Luna ✦</button>
+     <button class="bkbtn" onclick="event.stopPropagation();goBk('Rajasthan')">Book Now</button>
+    </div>
+   </div>
+  </div>
+  <div class="dcard" onclick="abt('Kerala')">
+   <div class="dphoto" style="background:linear-gradient(135deg,#1a5e35,#0b3d22)">
+    <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=500&amp;q=80" alt="Kerala" onerror="this.style.display='none'">
+    <div class="dphoto-ov"></div>
+    <div class="dphoto-em">🌴</div>
+    <div class="dphoto-price">₹20,000</div>
+    <div class="dphoto-nights">5N/6D</div>
+   </div>
+   <div class="dbody">
+    <div class="dname">Kerala</div>
+    <div class="dcountry">📍 India · Best: Sep–Mar</div>
+    <div class="dtags"><span class="dtag">Backwaters</span><span class="dtag">Ayurveda</span><span class="dtag">Beaches</span></div>
+    <div class="dfooter">
+     <button class="aibtn" onclick="event.stopPropagation();abt('Kerala')">Ask Luna ✦</button>
+     <button class="bkbtn" onclick="event.stopPropagation();goBk('Kerala')">Book Now</button>
+    </div>
+   </div>
+  </div>
+  <div class="dcard" onclick="abt('Manali')">
+   <div class="dphoto" style="background:linear-gradient(135deg,#1c4f7a,#0f3a5e)">
+    <img src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=500&amp;q=80" alt="Manali" onerror="this.style.display='none'">
+    <div class="dphoto-ov"></div>
+    <div class="dphoto-em">🏔️</div>
+    <div class="dphoto-price">₹12,000</div>
+    <div class="dphoto-nights">4N/5D</div>
+   </div>
+   <div class="dbody">
+    <div class="dname">Manali</div>
+    <div class="dcountry">📍 Himachal Pradesh · Best: Oct–Jun</div>
+    <div class="dtags"><span class="dtag">Snow</span><span class="dtag">Adventure</span><span class="dtag">Trekking</span></div>
+    <div class="dfooter">
+     <button class="aibtn" onclick="event.stopPropagation();abt('Manali')">Ask Luna ✦</button>
+     <button class="bkbtn" onclick="event.stopPropagation();goBk('Manali')">Book Now</button>
+    </div>
+   </div>
+  </div>
+  <div class="dcard" onclick="abt('Maldives')">
+   <div class="dphoto" style="background:linear-gradient(135deg,#0e6655,#0a4a3e)">
+    <img src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=500&amp;q=80" alt="Maldives" onerror="this.style.display='none'">
+    <div class="dphoto-ov"></div>
+    <div class="dphoto-em">🐠</div>
+    <div class="dphoto-price">₹65,000</div>
+    <div class="dphoto-nights">4N/5D</div>
+   </div>
+   <div class="dbody">
+    <div class="dname">Maldives</div>
+    <div class="dcountry">📍 Maldives · Best: Nov–Apr</div>
+    <div class="dtags"><span class="dtag">Luxury</span><span class="dtag">Overwater</span><span class="dtag">Snorkeling</span></div>
+    <div class="dfooter">
+     <button class="aibtn" onclick="event.stopPropagation();abt('Maldives')">Ask Luna ✦</button>
+     <button class="bkbtn" onclick="event.stopPropagation();goBk('Maldives')">Book Now</button>
+    </div>
+   </div>
+  </div>
+  <div class="dcard" onclick="abt('Bali')">
+   <div class="dphoto" style="background:linear-gradient(135deg,#6c3483,#4a2060)">
+    <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=500&amp;q=80" alt="Bali" onerror="this.style.display='none'">
+    <div class="dphoto-ov"></div>
+    <div class="dphoto-em">🌺</div>
+    <div class="dphoto-price">₹45,000</div>
+    <div class="dphoto-nights">5N/6D</div>
+   </div>
+   <div class="dbody">
+    <div class="dname">Bali</div>
+    <div class="dcountry">📍 Indonesia · Best: Apr–Oct</div>
+    <div class="dtags"><span class="dtag">Temples</span><span class="dtag">Beaches</span><span class="dtag">Yoga</span></div>
+    <div class="dfooter">
+     <button class="aibtn" onclick="event.stopPropagation();abt('Bali')">Ask Luna ✦</button>
+     <button class="bkbtn" onclick="event.stopPropagation();goBk('Bali')">Book Now</button>
+    </div>
+   </div>
+  </div>
+  <div class="dcard" onclick="abt('Thailand')">
+   <div class="dphoto" style="background:linear-gradient(135deg,#b7950b,#8a6f08)">
+    <img src="https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?w=500&amp;q=80" alt="Thailand" onerror="this.style.display='none'">
+    <div class="dphoto-ov"></div>
+    <div class="dphoto-em">🛕</div>
+    <div class="dphoto-price">₹35,000</div>
+    <div class="dphoto-nights">5N/6D</div>
+   </div>
+   <div class="dbody">
+    <div class="dname">Thailand</div>
+    <div class="dcountry">📍 Thailand · Best: Nov–Apr</div>
+    <div class="dtags"><span class="dtag">Culture</span><span class="dtag">Street Food</span><span class="dtag">Islands</span></div>
+    <div class="dfooter">
+     <button class="aibtn" onclick="event.stopPropagation();abt('Thailand')">Ask Luna ✦</button>
+     <button class="bkbtn" onclick="event.stopPropagation();goBk('Thailand')">Book Now</button>
+    </div>
+   </div>
+  </div>
+  <div class="dcard" onclick="abt('Dubai')">
+   <div class="dphoto" style="background:linear-gradient(135deg,#784212,#c45e18)">
+    <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=500&amp;q=80" alt="Dubai" onerror="this.style.display='none'">
+    <div class="dphoto-ov"></div>
+    <div class="dphoto-em">🏙️</div>
+    <div class="dphoto-price">₹55,000</div>
+    <div class="dphoto-nights">4N/5D</div>
+   </div>
+   <div class="dbody">
+    <div class="dname">Dubai</div>
+    <div class="dcountry">📍 UAE · Best: Nov–Apr</div>
+    <div class="dtags"><span class="dtag">Luxury</span><span class="dtag">Shopping</span><span class="dtag">Desert Safari</span></div>
+    <div class="dfooter">
+     <button class="aibtn" onclick="event.stopPropagation();abt('Dubai')">Ask Luna ✦</button>
+     <button class="bkbtn" onclick="event.stopPropagation();goBk('Dubai')">Book Now</button>
+    </div>
+   </div>
+  </div>
+  <div class="dcard" onclick="abt('Singapore')">
+   <div class="dphoto" style="background:linear-gradient(135deg,#1a237e,#0f1560)">
+    <img src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=500&amp;q=80" alt="Singapore" onerror="this.style.display='none'">
+    <div class="dphoto-ov"></div>
+    <div class="dphoto-em">🗼</div>
+    <div class="dphoto-price">₹50,000</div>
+    <div class="dphoto-nights">4N/5D</div>
+   </div>
+   <div class="dbody">
+    <div class="dname">Singapore</div>
+    <div class="dcountry">📍 Singapore · Best: Feb–Apr</div>
+    <div class="dtags"><span class="dtag">City</span><span class="dtag">Gardens</span><span class="dtag">Food</span></div>
+    <div class="dfooter">
+     <button class="aibtn" onclick="event.stopPropagation();abt('Singapore')">Ask Luna ✦</button>
+     <button class="bkbtn" onclick="event.stopPropagation();goBk('Singapore')">Book Now</button>
+    </div>
+   </div>
+  </div>
+  <div class="dcard" onclick="abt('Europe Tour')">
+   <div class="dphoto" style="background:linear-gradient(135deg,#4a235a,#311445)">
+    <img src="https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=500&amp;q=80" alt="Europe Tour" onerror="this.style.display='none'">
+    <div class="dphoto-ov"></div>
+    <div class="dphoto-em">🗺️</div>
+    <div class="dphoto-price">₹1,50,000</div>
+    <div class="dphoto-nights">10N/11D</div>
+   </div>
+   <div class="dbody">
+    <div class="dname">Europe Tour</div>
+    <div class="dcountry">📍 5 Countries · Best: Apr–Jun &amp; Sep–Oct</div>
+    <div class="dtags"><span class="dtag">History</span><span class="dtag">Romance</span><span class="dtag">Art</span></div>
+    <div class="dfooter">
+     <button class="aibtn" onclick="event.stopPropagation();abt('Europe Tour')">Ask Luna ✦</button>
+     <button class="bkbtn" onclick="event.stopPropagation();goBk('Europe Tour')">Book Now</button>
+    </div>
+   </div>
+  </div>
+  <div class="dcard" onclick="abt('Japan')">
+   <div class="dphoto" style="background:linear-gradient(135deg,#922b21,#6e1f18)">
+    <img src="https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=500&amp;q=80" alt="Japan" onerror="this.style.display='none'">
+    <div class="dphoto-ov"></div>
+    <div class="dphoto-em">⛩️</div>
+    <div class="dphoto-price">₹1,20,000</div>
+    <div class="dphoto-nights">7N/8D</div>
+   </div>
+   <div class="dbody">
+    <div class="dname">Japan</div>
+    <div class="dcountry">📍 Japan · Best: Mar–May (Sakura) &amp; Oct–Nov</div>
+    <div class="dtags"><span class="dtag">Culture</span><span class="dtag">Sakura</span><span class="dtag">Technology</span></div>
+    <div class="dfooter">
+     <button class="aibtn" onclick="event.stopPropagation();abt('Japan')">Ask Luna ✦</button>
+     <button class="bkbtn" onclick="event.stopPropagation();goBk('Japan')">Book Now</button>
+    </div>
+   </div>
+  </div>
+  <div class="dcard" onclick="abt('Kenya Safari')">
+   <div class="dphoto" style="background:linear-gradient(135deg,#1e5c2e,#143d1e)">
+    <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=500&amp;q=80" alt="Kenya Safari" onerror="this.style.display='none'">
+    <div class="dphoto-ov"></div>
+    <div class="dphoto-em">🦁</div>
+    <div class="dphoto-price">₹1,80,000</div>
+    <div class="dphoto-nights">6N/7D</div>
+   </div>
+   <div class="dbody">
+    <div class="dname">Kenya Safari</div>
+    <div class="dcountry">📍 Kenya · Best: Jul–Oct (Great Migration)</div>
+    <div class="dtags"><span class="dtag">Wildlife</span><span class="dtag">Safari</span><span class="dtag">Nature</span></div>
+    <div class="dfooter">
+     <button class="aibtn" onclick="event.stopPropagation();abt('Kenya Safari')">Ask Luna ✦</button>
+     <button class="bkbtn" onclick="event.stopPropagation();goBk('Kenya Safari')">Book Now</button>
+    </div>
+   </div>
+  </div></div>
+    </div>
+  </div>
+
+  <!-- FLIGHTS -->
+  <div class="panel" id="flights-panel">
+    <div class="si">
+      <div class="pt">✈️ Search &amp; Book Flights</div>
+      <div class="ps">Find best fares — select and confirm your booking instantly</div>
+      <div class="fsbox">
+        <div class="ttog">
+          <button class="ttb active" onclick="setTrip('one',this)">One Way</button>
+          <button class="ttb" onclick="setTrip('rt',this)">Round Trip</button>
+        </div>
+        <div class="frow">
+          <div class="fi"><label>FROM</label>
+            <select id="ffrom">
+              <option value="JAI">Jaipur (JAI)</option><option value="DEL">Delhi (DEL)</option>
+              <option value="BOM">Mumbai (BOM)</option><option value="BLR">Bangalore (BLR)</option>
+              <option value="MAA">Chennai (MAA)</option><option value="CCU">Kolkata (CCU)</option>
+              <option value="HYD">Hyderabad (HYD)</option><option value="AMD">Ahmedabad (AMD)</option>
+            </select>
+          </div>
+          <button class="swpbtn" onclick="swpCities()">⇄</button>
+          <div class="fi"><label>TO</label>
+            <select id="fto">
+              <option value="GOI">Goa (GOI)</option><option value="DEL">Delhi (DEL)</option>
+              <option value="BOM">Mumbai (BOM)</option><option value="COK">Kochi (COK)</option>
+              <option value="DXB">Dubai (DXB)</option><option value="SIN">Singapore (SIN)</option>
+              <option value="BKK">Bangkok (BKK)</option><option value="MLE">Maldives (MLE)</option>
+              <option value="DPS">Bali (DPS)</option><option value="NRT">Tokyo (NRT)</option>
+            </select>
+          </div>
+          <div class="fi"><label>DEPARTURE DATE</label><input type="date" id="fdep" min="2026-05-28"></div>
+        </div>
+        <div id="retrow" style="display:none;margin-bottom:10px">
+          <div class="fi" style="max-width:200px"><label>RETURN DATE</label><input type="date" id="fret" min="2026-05-28"></div>
+        </div>
+        <div class="frow2">
+          <div class="fi"><label>PASSENGERS</label>
+            <select id="fpax">
+              <option>1 Adult</option><option>2 Adults</option><option>3 Adults</option>
+              <option>4 Adults</option><option>2 Adults + 1 Child</option><option>2 Adults + 2 Children</option>
+            </select>
+          </div>
+          <div class="fi"><label>CLASS</label>
+            <select id="fcls">
+              <option>Economy</option><option>Premium Economy</option>
+              <option>Business</option><option>First Class</option>
+            </select>
+          </div>
+          <div class="fi"><label>PREFERRED AIRLINE</label>
+            <select id="fal">
+              <option value="">Any Airline</option><option>IndiGo</option><option>Air India</option>
+              <option>SpiceJet</option><option>Vistara</option><option>Emirates</option>
+              <option>Singapore Airlines</option>
+            </select>
+          </div>
+          <button class="sbtn" onclick="searchFlts()">🔍 Search Flights</button>
+        </div>
+      </div>
+      <div id="fres"></div>
+    </div>
+  </div>
+
+  <!-- HOTELS -->
+  <div class="panel" id="hotels-panel">
+    <div class="si">
+      <div class="pt">🏨 Search Hotels</div>
+      <div class="ps">Browse hotels with real photos, ratings and instant booking</div>
+      <div class="hsbox">
+        <div class="hrow">
+          <div class="fi"><label>CITY / DESTINATION</label>
+            <select id="hcity">
+              <option>Goa</option><option>Jaipur</option><option>Udaipur</option><option>Manali</option>
+              <option>Shimla</option><option>Munnar</option><option>Alleppey</option><option>Ooty</option>
+              <option>Andaman</option><option>Rishikesh</option><option>Agra</option><option>Delhi</option>
+              <option>Mumbai</option><option>Dubai</option><option>Singapore</option><option>Bali</option>
+              <option>Bangkok</option><option>Maldives</option>
+            </select>
+          </div>
+          <div class="fi"><label>CHECK-IN</label><input type="date" id="htin" min="2026-05-28"></div>
+          <div class="fi"><label>CHECK-OUT</label><input type="date" id="htout" min="2026-05-28"></div>
+          <div class="fi"><label>GUESTS</label>
+            <select id="hguests">
+              <option>1 Guest, 1 Room</option><option>2 Guests, 1 Room</option>
+              <option>3 Guests, 2 Rooms</option><option>4 Guests, 2 Rooms</option>
+            </select>
+          </div>
+          <button class="sbtn" onclick="searchHtls()">🔍 Search</button>
+        </div>
+        <div class="hrow2">
+          <div class="fi"><label>STARS</label>
+            <select id="hstars" style="min-width:130px">
+              <option value="">Any Stars</option><option value="5">⭐⭐⭐⭐⭐ 5-Star</option>
+              <option value="4">⭐⭐⭐⭐ 4-Star</option><option value="3">⭐⭐⭐ 3-Star</option>
+              <option value="2">⭐⭐ Budget</option>
+            </select>
+          </div>
+          <div class="fi"><label>TYPE</label>
+            <select id="htype" style="min-width:140px">
+              <option value="">All Types</option><option>Beach Resort</option><option>Heritage Hotel</option>
+              <option>Mountain Resort</option><option>City Hotel</option><option>Houseboat</option>
+              <option>Luxury Villa</option><option>Boutique Hotel</option>
+            </select>
+          </div>
+          <div class="fi"><label>MAX PRICE/NIGHT</label>
+            <select id="hprice" style="min-width:150px">
+              <option value="">Any Price</option><option value="3000">Under ₹3,000</option>
+              <option value="6000">Under ₹6,000</option><option value="12000">Under ₹12,000</option>
+              <option value="25000">Under ₹25,000</option><option value="99999">Under ₹1,00,000</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="hgrid" id="hres"></div>
+    </div>
+  </div>
+
+  <!-- PACKAGE BUILDER -->
+  <div class="panel" id="customize-panel">
+    <div class="si">
+      <div class="pt">🎨 Build Your Own Package</div>
+      <div class="ps">Choose everything yourself — destination, hotel, meals, activities &amp; more</div>
+      <div class="pb">
+        <div class="psteps" id="psteps">
+  <div class="scard" id="sc-dest">
+   <div class="shead">
+    <div class="snum" id="sn-dest">1</div>
+    <div class="stitle">🌍 Destination</div>
+   </div>
+   <div class="ogrid">
+    <div class="obtn" id="ob-dest-0" onclick="selOpt('dest',0)">
+     <div class="oem">🏖️</div>
+     <div class="oname">Goa</div>
+     <div class="osub">India</div>
+    </div>
+    <div class="obtn" id="ob-dest-1" onclick="selOpt('dest',1)">
+     <div class="oem">🏰</div>
+     <div class="oname">Rajasthan</div>
+     <div class="osub">India</div>
+    </div>
+    <div class="obtn" id="ob-dest-2" onclick="selOpt('dest',2)">
+     <div class="oem">🌴</div>
+     <div class="oname">Kerala</div>
+     <div class="osub">India</div>
+    </div>
+    <div class="obtn" id="ob-dest-3" onclick="selOpt('dest',3)">
+     <div class="oem">🏔️</div>
+     <div class="oname">Manali</div>
+     <div class="osub">Himachal Pradesh</div>
+    </div>
+    <div class="obtn" id="ob-dest-4" onclick="selOpt('dest',4)">
+     <div class="oem">🐠</div>
+     <div class="oname">Maldives</div>
+     <div class="osub">Maldives</div>
+    </div>
+    <div class="obtn" id="ob-dest-5" onclick="selOpt('dest',5)">
+     <div class="oem">🌺</div>
+     <div class="oname">Bali</div>
+     <div class="osub">Indonesia</div>
+    </div>
+    <div class="obtn" id="ob-dest-6" onclick="selOpt('dest',6)">
+     <div class="oem">🛕</div>
+     <div class="oname">Thailand</div>
+     <div class="osub">Thailand</div>
+    </div>
+    <div class="obtn" id="ob-dest-7" onclick="selOpt('dest',7)">
+     <div class="oem">🏙️</div>
+     <div class="oname">Dubai</div>
+     <div class="osub">UAE</div>
+    </div>
+    <div class="obtn" id="ob-dest-8" onclick="selOpt('dest',8)">
+     <div class="oem">🗼</div>
+     <div class="oname">Singapore</div>
+     <div class="osub">Singapore</div>
+    </div>
+    <div class="obtn" id="ob-dest-9" onclick="selOpt('dest',9)">
+     <div class="oem">🗺️</div>
+     <div class="oname">Europe Tour</div>
+     <div class="osub">5 Countries</div>
+    </div>
+    <div class="obtn" id="ob-dest-10" onclick="selOpt('dest',10)">
+     <div class="oem">⛩️</div>
+     <div class="oname">Japan</div>
+     <div class="osub">Japan</div>
+    </div>
+    <div class="obtn" id="ob-dest-11" onclick="selOpt('dest',11)">
+     <div class="oem">🦁</div>
+     <div class="oname">Kenya Safari</div>
+     <div class="osub">Kenya</div>
+    </div>
+   </div>
+  </div>
+  <div class="scard" id="sc-dur">
+   <div class="shead">
+    <div class="snum" id="sn-dur">2</div>
+    <div class="stitle">📅 Duration</div>
+   </div>
+   <div class="ogrid">
+    <div class="obtn" id="ob-dur-0" onclick="selOpt('dur',0)">
+     <div class="oem">🌅</div>
+     <div class="oname">3 Nights</div>
+     <div class="osub">4 Days</div>
+    </div>
+    <div class="obtn" id="ob-dur-1" onclick="selOpt('dur',1)">
+     <div class="oem">🌄</div>
+     <div class="oname">5 Nights</div>
+     <div class="osub">6 Days +₹5,000</div>
+    </div>
+    <div class="obtn" id="ob-dur-2" onclick="selOpt('dur',2)">
+     <div class="oem">🌠</div>
+     <div class="oname">7 Nights</div>
+     <div class="osub">8 Days +₹12,000</div>
+    </div>
+    <div class="obtn" id="ob-dur-3" onclick="selOpt('dur',3)">
+     <div class="oem">🏕️</div>
+     <div class="oname">10 Nights</div>
+     <div class="osub">11 Days +₹22,000</div>
+    </div>
+    <div class="obtn" id="ob-dur-4" onclick="selOpt('dur',4)">
+     <div class="oem">🌍</div>
+     <div class="oname">14 Nights</div>
+     <div class="osub">15 Days +₹38,000</div>
+    </div>
+   </div>
+  </div>
+  <div class="scard" id="sc-hotel">
+   <div class="shead">
+    <div class="snum" id="sn-hotel">3</div>
+    <div class="stitle">🏨 Hotel Category</div>
+   </div>
+   <div class="ogrid">
+    <div class="obtn" id="ob-hotel-0" onclick="selOpt('hotel',0)">
+     <div class="oem">🏠</div>
+     <div class="oname">Budget</div>
+     <div class="osub">2-3 Star +₹2,500</div>
+    </div>
+    <div class="obtn" id="ob-hotel-1" onclick="selOpt('hotel',1)">
+     <div class="oem">🏩</div>
+     <div class="oname">Standard</div>
+     <div class="osub">4 Star +₹5,000</div>
+    </div>
+    <div class="obtn" id="ob-hotel-2" onclick="selOpt('hotel',2)">
+     <div class="oem">🏰</div>
+     <div class="oname">Premium</div>
+     <div class="osub">5 Star +₹10,000</div>
+    </div>
+    <div class="obtn" id="ob-hotel-3" onclick="selOpt('hotel',3)">
+     <div class="oem">💎</div>
+     <div class="oname">Luxury</div>
+     <div class="osub">5 Star Deluxe +₹18,000</div>
+    </div>
+    <div class="obtn" id="ob-hotel-4" onclick="selOpt('hotel',4)">
+     <div class="oem">🛥️</div>
+     <div class="oname">Unique Stay</div>
+     <div class="osub">Villa / Houseboat +₹14,000</div>
+    </div>
+   </div>
+  </div>
+  <div class="scard" id="sc-trans">
+   <div class="shead">
+    <div class="snum" id="sn-trans">4</div>
+    <div class="stitle">🚗 Transport</div>
+   </div>
+   <div class="ogrid">
+    <div class="obtn" id="ob-trans-0" onclick="selOpt('trans',0)">
+     <div class="oem">🚌</div>
+     <div class="oname">Shared Bus</div>
+     <div class="osub">Budget +₹500</div>
+    </div>
+    <div class="obtn" id="ob-trans-1" onclick="selOpt('trans',1)">
+     <div class="oem">🚗</div>
+     <div class="oname">Private Car</div>
+     <div class="osub">Comfortable +₹2,000</div>
+    </div>
+    <div class="obtn" id="ob-trans-2" onclick="selOpt('trans',2)">
+     <div class="oem">🚙</div>
+     <div class="oname">Premium SUV</div>
+     <div class="osub">Luxury +₹4,000</div>
+    </div>
+    <div class="obtn" id="ob-trans-3" onclick="selOpt('trans',3)">
+     <div class="oem">✈️</div>
+     <div class="oname">Include Flights</div>
+     <div class="osub">Roundtrip +₹15,000</div>
+    </div>
+   </div>
+  </div>
+  <div class="scard" id="sc-meals">
+   <div class="shead">
+    <div class="snum" id="sn-meals">5</div>
+    <div class="stitle">🍽️ Meal Plan</div>
+   </div>
+   <div class="ogrid">
+    <div class="obtn" id="ob-meals-0" onclick="selOpt('meals',0)">
+     <div class="oem">☕</div>
+     <div class="oname">Breakfast Only</div>
+     <div class="osub"></div>
+    </div>
+    <div class="obtn" id="ob-meals-1" onclick="selOpt('meals',1)">
+     <div class="oem">🍱</div>
+     <div class="oname">Half Board</div>
+     <div class="osub">Bfast + Dinner +₹1,500</div>
+    </div>
+    <div class="obtn" id="ob-meals-2" onclick="selOpt('meals',2)">
+     <div class="oem">🍽️</div>
+     <div class="oname">Full Board</div>
+     <div class="osub">All 3 meals +₹3,000</div>
+    </div>
+    <div class="obtn" id="ob-meals-3" onclick="selOpt('meals',3)">
+     <div class="oem">🥂</div>
+     <div class="oname">All-Inclusive</div>
+     <div class="osub">Meals + Drinks +₹5,000</div>
+    </div>
+   </div>
+  </div>
+  <div class="scard" id="sc-acts">
+   <div class="shead">
+    <div class="snum" id="sn-acts">6</div>
+    <div class="stitle">🎯 Activities</div>
+   </div>
+   <div class="ogrid">
+    <div class="obtn" id="ob-acts-0" onclick="selOpt('acts',0)">
+     <div class="oem">🚶</div>
+     <div class="oname">Sightseeing</div>
+     <div class="osub">City tours +₹1,500</div>
+    </div>
+    <div class="obtn" id="ob-acts-1" onclick="selOpt('acts',1)">
+     <div class="oem">🤿</div>
+     <div class="oname">Water Sports</div>
+     <div class="osub">Snorkeling etc. +₹3,000</div>
+    </div>
+    <div class="obtn" id="ob-acts-2" onclick="selOpt('acts',2)">
+     <div class="oem">🧘</div>
+     <div class="oname">Spa &amp; Yoga</div>
+     <div class="osub">Wellness +₹2,500</div>
+    </div>
+    <div class="obtn" id="ob-acts-3" onclick="selOpt('acts',3)">
+     <div class="oem">🏕️</div>
+     <div class="oname">Adventure</div>
+     <div class="osub">Trekking etc. +₹3,500</div>
+    </div>
+    <div class="obtn" id="ob-acts-4" onclick="selOpt('acts',4)">
+     <div class="oem">🎭</div>
+     <div class="oname">Cultural</div>
+     <div class="osub">Shows &amp; Food +₹2,000</div>
+    </div>
+    <div class="obtn" id="ob-acts-5" onclick="selOpt('acts',5)">
+     <div class="oem">🎉</div>
+     <div class="oname">Everything!</div>
+     <div class="osub">All included +₹8,000</div>
+    </div>
+   </div>
+  </div>
+  <div class="scard" id="sc-trav">
+   <div class="shead">
+    <div class="snum" id="sn-trav">7</div>
+    <div class="stitle">👥 No. of Travelers</div>
+   </div>
+   <div class="ogrid">
+    <div class="obtn" id="ob-trav-0" onclick="selOpt('trav',0)">
+     <div class="oem">🧍</div>
+     <div class="oname">Solo</div>
+     <div class="osub">1 Person</div>
+    </div>
+    <div class="obtn" id="ob-trav-1" onclick="selOpt('trav',1)">
+     <div class="oem">👫</div>
+     <div class="oname">Couple</div>
+     <div class="osub">2 People</div>
+    </div>
+    <div class="obtn" id="ob-trav-2" onclick="selOpt('trav',2)">
+     <div class="oem">👨‍👩‍👧</div>
+     <div class="oname">Family 3</div>
+     <div class="osub">3 People</div>
+    </div>
+    <div class="obtn" id="ob-trav-3" onclick="selOpt('trav',3)">
+     <div class="oem">👨‍👩‍👧‍👦</div>
+     <div class="oname">Family 4</div>
+     <div class="osub">4 People</div>
+    </div>
+    <div class="obtn" id="ob-trav-4" onclick="selOpt('trav',4)">
+     <div class="oem">👥</div>
+     <div class="oname">Group 6+</div>
+     <div class="osub">6+ People -₹1,500</div>
+    </div>
+   </div>
+  </div></div>
+        <div class="psum" id="psum">
+          <div class="sum-title">📦 Your Package</div>
+          <div id="sumimg"><div class="sum-ph">🌍</div></div>
+          <div id="sumrows"><div style="color:var(--mut);font-size:11px;text-align:center;padding:8px">Select options to build ✨</div></div>
+          <div class="stot"><span class="stot-l">Estimated Total</span><span class="stot-v" id="sumtot">₹0</span></div>
+          <button class="cfbtn" onclick="confPkg()">🌙 Confirm &amp; Book →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PACKAGES -->
+  <div class="panel" id="pkg-panel">
+    <div class="si">
+      <div class="pt">✨ Tour Packages</div>
+      <div class="ps">Ready-made packages for every type of traveler</div>
+      <div class="pklist" id="pklist">
+  <div class="pkcard">
+   <div class="pkico">💑</div>
+   <div class="pkinfo">
+    <div class="pkname">Honeymoon Bliss</div>
+    <div class="pkdesc">Romantic getaways for newlyweds — luxury hotel, candlelit dinners, couple spa &amp; more.</div>
+    <div class="pkfeats"><span class="pkf">✓ Luxury Hotel</span><span class="pkf">✓ Romantic Dinner</span><span class="pkf">✓ Couple Spa</span><span class="pkf">✓ Airport Transfer</span><span class="pkf">✓ Guided Tours</span><span class="pkf">✓ Travel Insurance</span></div>
+    <div class="pkfoot"><div><span class="pkprice">₹45,000</span><span class="pkper"> /couple</span></div>
+    <button class="pkbtn" onclick="abt('Honeymoon Bliss package')">Enquire Now</button></div>
+   </div>
+  </div>
+  <div class="pkcard">
+   <div class="pkico">👨‍👩‍👧‍👦</div>
+   <div class="pkinfo">
+    <div class="pkname">Family Fiesta</div>
+    <div class="pkdesc">Fun family adventures with kid-friendly activities, comfortable stays &amp; flexible itinerary.</div>
+    <div class="pkfeats"><span class="pkf">✓ Family Rooms</span><span class="pkf">✓ Kids Activities</span><span class="pkf">✓ Theme Parks</span><span class="pkf">✓ All Meals</span><span class="pkf">✓ Medical Help</span><span class="pkf">✓ Flexible Plan</span></div>
+    <div class="pkfoot"><div><span class="pkprice">₹28,000</span><span class="pkper"> /person (min 4)</span></div>
+    <button class="pkbtn" onclick="abt('Family Fiesta package')">Enquire Now</button></div>
+   </div>
+  </div>
+  <div class="pkcard">
+   <div class="pkico">🏔️</div>
+   <div class="pkinfo">
+    <div class="pkname">Adventure Seeker</div>
+    <div class="pkdesc">Trekking, rafting, camping &amp; adrenaline experiences for the bold traveler.</div>
+    <div class="pkfeats"><span class="pkf">✓ Trekking</span><span class="pkf">✓ River Rafting</span><span class="pkf">✓ Camping</span><span class="pkf">✓ Safety Gear</span><span class="pkf">✓ Expert Guides</span><span class="pkf">✓ Certificate</span></div>
+    <div class="pkfoot"><div><span class="pkprice">₹22,000</span><span class="pkper"> /person</span></div>
+    <button class="pkbtn" onclick="abt('Adventure Seeker package')">Enquire Now</button></div>
+   </div>
+  </div>
+  <div class="pkcard">
+   <div class="pkico">✈️</div>
+   <div class="pkinfo">
+    <div class="pkname">International Explorer</div>
+    <div class="pkdesc">Multi-country trips with flights, visas, hotels &amp; tours all handled by us.</div>
+    <div class="pkfeats"><span class="pkf">✓ Visa Assistance</span><span class="pkf">✓ Intl Flights</span><span class="pkf">✓ 4-Star Hotels</span><span class="pkf">✓ Multi-City Tour</span><span class="pkf">✓ Travel Insurance</span><span class="pkf">✓ 24/7 Support</span></div>
+    <div class="pkfoot"><div><span class="pkprice">₹95,000</span><span class="pkper"> /person</span></div>
+    <button class="pkbtn" onclick="abt('International Explorer package')">Enquire Now</button></div>
+   </div>
+  </div>
+  <div class="pkcard">
+   <div class="pkico">🧘</div>
+   <div class="pkinfo">
+    <div class="pkname">Wellness Retreat</div>
+    <div class="pkdesc">Ayurveda, yoga, meditation &amp; nature escapes to rejuvenate body and soul.</div>
+    <div class="pkfeats"><span class="pkf">✓ Ayurveda Spa</span><span class="pkf">✓ Yoga Classes</span><span class="pkf">✓ Organic Meals</span><span class="pkf">✓ Nature Walks</span><span class="pkf">✓ Detox Program</span><span class="pkf">✓ Therapists</span></div>
+    <div class="pkfoot"><div><span class="pkprice">₹38,000</span><span class="pkper"> /person</span></div>
+    <button class="pkbtn" onclick="abt('Wellness Retreat package')">Enquire Now</button></div>
+   </div>
+  </div>
+  <div class="pkcard">
+   <div class="pkico">💼</div>
+   <div class="pkinfo">
+    <div class="pkname">Corporate Getaway</div>
+    <div class="pkdesc">MICE events, team outings, conferences &amp; incentive trips managed end-to-end.</div>
+    <div class="pkfeats"><span class="pkf">✓ MICE Events</span><span class="pkf">✓ Team Activities</span><span class="pkf">✓ Conference Rooms</span><span class="pkf">✓ Group Discounts</span><span class="pkf">✓ Dedicated Manager</span><span class="pkf">✓ Custom Plan</span></div>
+    <div class="pkfoot"><div><span class="pkprice">Custom</span><span class="pkper"> /quote</span></div>
+    <button class="pkbtn" onclick="abt('Corporate Getaway package')">Enquire Now</button></div>
+   </div>
+  </div></div>
+    </div>
+  </div>
+
+  <!-- BOOKING -->
+  <div class="panel" id="book-panel">
+    <div class="si">
+      <div class="pt">📋 Book Your Trip</div>
+      <div class="ps">Submit inquiry — our team calls back within 24 hours</div>
+      <div class="bgrid">
+        <div class="fg"><label class="fl">Full Name *</label><input class="fi2" id="bn" placeholder="Your full name"></div>
+        <div class="fg"><label class="fl">Phone / WhatsApp *</label><input class="fi2" id="bp" type="tel" placeholder="+91 XXXXX XXXXX"></div>
+        <div class="fg"><label class="fl">Email</label><input class="fi2" id="be" type="email" placeholder="you@email.com"></div>
+        <div class="fg"><label class="fl">Destination *</label>
+          <select class="fs2" id="bd">
+            <option value="">Select destination</option>
+            <option>Goa</option><option>Rajasthan</option><option>Kerala</option><option>Himachal Pradesh</option>
+            <option>Maldives</option><option>Bali</option><option>Thailand</option><option>Dubai</option>
+            <option>Singapore</option><option>Europe</option><option>Japan</option><option>Other</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Departure Date</label><input class="fi2" id="bdate" type="date" min="2026-05-28"></div>
+        <div class="fg"><label class="fl">No. of Travelers</label><input class="fi2" id="btrav" type="number" min="1" placeholder="2"></div>
+        <div class="fg"><label class="fl">Budget (per person)</label>
+          <select class="fs2" id="bbudget">
+            <option value="">Select range</option><option>Under ₹20,000</option>
+            <option>₹20,000–₹50,000</option><option>₹50,000–₹1,00,000</option><option>₹1,00,000+</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Trip Type</label>
+          <select class="fs2" id="btype">
+            <option value="">Select type</option><option>Honeymoon</option><option>Family</option>
+            <option>Friends</option><option>Solo</option><option>Corporate</option><option>Adventure</option>
+          </select>
+        </div>
+        <div class="fg full"><label class="fl">Special Requests</label>
+          <textarea class="ft2" id="bmsg" placeholder="Any special requirements, preferences…"></textarea>
+        </div>
+      </div>
+      <button class="subbtn" onclick="submitBook()">🌙 Submit Inquiry →</button>
+    </div>
+  </div>
+</main>
+</div>
+
+<!-- FLOATING BOT -->
+<button id="fab" onclick="togBot()">🌙<span id="badge" class="unread" style="display: flex; position: absolute;">1</span></button>
+<div id="botwin">
+  <div id="bothdr">
+    <div class="bav">🌙<div class="bonline"></div></div>
+    <div class="binfo"><div class="bname">Luna — Travel AI</div><div class="bstat">Online · Moon Connect Travels</div></div>
+    <button id="botcls" onclick="togBot()">✕</button>
+  </div>
+  <div id="botmsgs"></div>
+  <div id="botq">
+    <button class="bqb" onclick="bq('Best honeymoon destinations?')">💑 Honeymoon</button>
+    <button class="bqb" onclick="bq('Budget under ₹25,000?')">💰 Budget</button>
+    <button class="bqb" onclick="bq('Visa for Dubai?')">🛂 Visa</button>
+    <button class="bqb" onclick="bq('Adventure trips India?')">🏔️ Adventure</button>
+  </div>
+  <div id="botinrow">
+    <input id="botin" type="text" placeholder="Ask Luna…" onkeydown="bkey(event)">
+    <button id="botsnd" onclick="bsend()">➤</button>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div id="movl" onclick="clsMod(event)">
+  <div id="mod">
+    <h3 id="modtitle"></h3><p id="moddesc"></p>
+    <div class="mrows" id="modrows"></div>
+    <div class="mbtns">
+      <button class="mcanc" onclick="clsMod()">Cancel</button>
+      <button class="mconf" id="mconf">Confirm Booking ✓</button>
+    </div>
+  </div>
+</div>
+<div id="toast"><span class="ti" id="ti">✅</span><span class="tt" id="tt">Done!</span></div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────
+const DESTS=[
+ {id:'goa',e:'🏖️',n:'Goa',c:'India',tags:['Beach','Nightlife','Water Sports'],p:'₹15,000',ni:'4N/5D',
+  photo:'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=500&q=80',
+  hphoto:'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=500&q=80',
+  bg:'linear-gradient(135deg,#0d3b6e,#1a6fa8)',
+  season:'Nov–Mar',hl:'Baga Beach, Dudhsagar Falls, Old Goa Churches, Water Sports, Nightlife',
+  food:'Fish Curry Rice, Bebinca, Seafood, Feni',tip:'Rent a scooter for best exploring! Avoid Jun–Sep monsoon.'},
+ {id:'rajasthan',e:'🏰',n:'Rajasthan',c:'India',tags:['Heritage','Desert','Culture'],p:'₹18,000',ni:'5N/6D',
+  photo:'https://images.unsplash.com/photo-1477587458883-47145ed94245?w=500&q=80',
+  hphoto:'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&q=80',
+  bg:'linear-gradient(135deg,#7d3c13,#c47a1a)',
+  season:'Oct–Mar',hl:'Amber Fort, Mehrangarh, Jaisalmer Desert, City Palace, Pushkar',
+  food:'Dal Baati Churma, Laal Maas, Ghevar, Ker Sangri',tip:'Stay in a heritage haveli in Jaisalmer for real Rajasthan magic!'},
+ {id:'kerala',e:'🌴',n:'Kerala',c:'India',tags:['Backwaters','Ayurveda','Beaches'],p:'₹20,000',ni:'5N/6D',
+  photo:'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=500&q=80',
+  hphoto:'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=500&q=80',
+  bg:'linear-gradient(135deg,#1a5e35,#0b3d22)',
+  season:'Sep–Mar',hl:'Alleppey Backwaters, Munnar Tea Gardens, Kovalam Beach, Periyar',
+  food:'Appam & Stew, Kerala Fish Curry, Puttu & Kadala, Payasam',tip:'Overnight houseboat in Alleppey is a MUST — book in advance!'},
+ {id:'manali',e:'🏔️',n:'Manali',c:'Himachal Pradesh',tags:['Snow','Adventure','Trekking'],p:'₹12,000',ni:'4N/5D',
+  photo:'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=500&q=80',
+  hphoto:'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=500&q=80',
+  bg:'linear-gradient(135deg,#1c4f7a,#0f3a5e)',
+  season:'Oct–Jun',hl:'Rohtang Pass, Solang Valley, Hadimba Temple, River Rafting, Old Manali',
+  food:'Sidu, Momos, Trout Fish, Dham, Aktori',tip:'Rohtang Pass needs a permit — book online 2 days before!'},
+ {id:'maldives',e:'🐠',n:'Maldives',c:'Maldives',tags:['Luxury','Overwater','Snorkeling'],p:'₹65,000',ni:'4N/5D',
+  photo:'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=500&q=80',
+  hphoto:'https://images.unsplash.com/photo-1540202404-a2f29016b523?w=500&q=80',
+  bg:'linear-gradient(135deg,#0e6655,#0a4a3e)',
+  season:'Nov–Apr',hl:'Snorkeling, Scuba Diving, Dolphin Watching, Private Beaches, Bioluminescent Beaches',
+  food:'Garudhiya, Mas Huni, Fresh Lobster, Bis Keemiya',tip:'Local islands like Maafushi are 60% cheaper than resort islands!'},
+ {id:'bali',e:'🌺',n:'Bali',c:'Indonesia',tags:['Temples','Beaches','Yoga'],p:'₹45,000',ni:'5N/6D',
+  photo:'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=500&q=80',
+  hphoto:'https://images.unsplash.com/photo-1573548842355-73bb50e50b83?w=500&q=80',
+  bg:'linear-gradient(135deg,#6c3483,#4a2060)',
+  season:'Apr–Oct',hl:'Tanah Lot Temple, Ubud Rice Terraces, Mount Batur, Seminyak Beach, Monkey Forest',
+  food:'Nasi Goreng, Babi Guling, Satay, Mie Goreng',tip:'Rent a scooter in Ubud — explore rice paddies at sunrise!'},
+ {id:'thailand',e:'🛕',n:'Thailand',c:'Thailand',tags:['Culture','Street Food','Islands'],p:'₹35,000',ni:'5N/6D',
+  photo:'https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?w=500&q=80',
+  hphoto:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80',
+  bg:'linear-gradient(135deg,#b7950b,#8a6f08)',
+  season:'Nov–Apr',hl:'Grand Palace, Phi Phi Islands, Elephant Sanctuary, Chiang Mai, Floating Market',
+  food:'Pad Thai, Tom Yum, Green Curry, Mango Sticky Rice, Som Tam',tip:'Book island tours a day ahead — they sell out fast!'},
+ {id:'dubai',e:'🏙️',n:'Dubai',c:'UAE',tags:['Luxury','Shopping','Desert Safari'],p:'₹55,000',ni:'4N/5D',
+  photo:'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=500&q=80',
+  hphoto:'https://images.unsplash.com/photo-1517840901100-8179e982acb7?w=500&q=80',
+  bg:'linear-gradient(135deg,#784212,#c45e18)',
+  season:'Nov–Apr',hl:'Burj Khalifa, Dubai Mall, Desert Safari, Palm Jumeirah, Dubai Frame',
+  food:'Shawarma, Al Harees, Camel Burger, Luqaimat, Arabic Coffee',tip:'Desert safari at sunset is magical! Book 2 days ahead.'},
+ {id:'singapore',e:'🗼',n:'Singapore',c:'Singapore',tags:['City','Gardens','Food'],p:'₹50,000',ni:'4N/5D',
+  photo:'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=500&q=80',
+  hphoto:'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500&q=80',
+  bg:'linear-gradient(135deg,#1a237e,#0f1560)',
+  season:'Feb–Apr',hl:'Gardens by the Bay, Marina Bay Sands, Sentosa, Universal Studios, Hawker Centers',
+  food:'Hainanese Chicken Rice, Chilli Crab, Laksa, Kaya Toast, Satay',tip:'Get Singapore Tourist Pass for unlimited MRT travel!'},
+ {id:'europe',e:'🗺️',n:'Europe Tour',c:'5 Countries',tags:['History','Romance','Art'],p:'₹1,50,000',ni:'10N/11D',
+  photo:'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=500&q=80',
+  hphoto:'https://images.unsplash.com/photo-1549294413-26f195200c16?w=500&q=80',
+  bg:'linear-gradient(135deg,#4a235a,#311445)',
+  season:'Apr–Jun & Sep–Oct',hl:'Eiffel Tower, Colosseum, Amsterdam Canals, Sagrada Familia, Prague Castle',
+  food:'Croissants in Paris, Pasta in Rome, Stroopwafel in Amsterdam, Tapas in Barcelona',tip:'Apply Schengen Visa 3 months in advance — takes 2–4 weeks!'},
+ {id:'japan',e:'⛩️',n:'Japan',c:'Japan',tags:['Culture','Sakura','Technology'],p:'₹1,20,000',ni:'7N/8D',
+  photo:'https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=500&q=80',
+  hphoto:'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=500&q=80',
+  bg:'linear-gradient(135deg,#922b21,#6e1f18)',
+  season:'Mar–May (Sakura) & Oct–Nov',hl:'Mount Fuji, Fushimi Inari, Tokyo Shibuya, Osaka Castle, Bullet Train',
+  food:'Sushi, Ramen, Tempura, Takoyaki, Wagashi sweets',tip:'Get JR Pass before arriving India — saves ₹15,000+ on trains!'},
+ {id:'kenya',e:'🦁',n:'Kenya Safari',c:'Kenya',tags:['Wildlife','Safari','Nature'],p:'₹1,80,000',ni:'6N/7D',
+  photo:'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=500&q=80',
+  hphoto:'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=500&q=80',
+  bg:'linear-gradient(135deg,#1e5c2e,#143d1e)',
+  season:'Jul–Oct (Great Migration)',hl:'Masai Mara, Great Migration, Amboseli, Lake Nakuru, Nairobi Park',
+  food:'Nyama Choma, Ugali, Sukuma Wiki, Mandazi',tip:'Book tented camps 6 months ahead for Migration season!'},
+];
+
+const HOTEL_DB={
+ Goa:[
+  {n:'Taj Exotica Resort & Spa',s:'⭐⭐⭐⭐⭐',t:'Beach Resort',p:18500,loc:'Benaulim Beach, South Goa',
+   am:['Private Beach','Infinity Pool','Spa','Fine Dining','Bar'],b:'Best Seller',
+   img:'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&q=80'},
+  {n:'W Goa',s:'⭐⭐⭐⭐⭐',t:'Beach Resort',p:22000,loc:'Vagator Beach, North Goa',
+   am:['Infinity Pool','Beach Club','DJ Nights','Spa','Bar'],b:'Trendy',
+   img:'https://images.unsplash.com/photo-1540202404-a2f29016b523?w=400&q=80'},
+  {n:'Alila Diwa Goa',s:'⭐⭐⭐⭐⭐',t:'Boutique Resort',p:12000,loc:'Majorda, South Goa',
+   am:['Pool','Spa','Restaurant','Tropical Gardens','Yoga'],b:'Boutique',
+   img:'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=400&q=80'},
+  {n:'Lemon Tree Amarante',s:'⭐⭐⭐⭐',t:'City Hotel',p:5500,loc:'Candolim, North Goa',
+   am:['Pool','Restaurant','Bar','WiFi','Gym'],b:'Value Pick',
+   img:'https://images.unsplash.com/photo-1549294413-26f195200c16?w=400&q=80'},
+  {n:'La Calypso Baga',s:'⭐⭐⭐',t:'Beach Resort',p:2800,loc:'Baga Beach, North Goa',
+   am:['Pool','Beach View','Restaurant'],b:'Budget',
+   img:'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=80'},
+ ],
+ Maldives:[
+  {n:'Soneva Fushi',s:'⭐⭐⭐⭐⭐',t:'Overwater Villa',p:95000,loc:'Baa Atoll',
+   am:['Overwater Bungalow','Private Pool','Diving','Spa','Cinema'],b:'Ultra Luxury',
+   img:'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=400&q=80'},
+  {n:'Cinnamon Velifushi',s:'⭐⭐⭐⭐⭐',t:'Beach Resort',p:45000,loc:'Vaavu Atoll',
+   am:['Water Sports','Diving','Spa','All-Inclusive','Seaplane Transfer'],b:'Top Pick',
+   img:'https://images.unsplash.com/photo-1540202404-a2f29016b523?w=400&q=80'},
+  {n:'Maafushi Island Hotel',s:'⭐⭐⭐',t:'Boutique Hotel',p:9500,loc:'Maafushi Local Island',
+   am:['Beach','Water Sports','Restaurant','Snorkeling'],b:'Budget Friendly',
+   img:'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=400&q=80'},
+ ],
+ Jaipur:[
+  {n:'Rambagh Palace',s:'⭐⭐⭐⭐⭐',t:'Heritage Hotel',p:38000,loc:'Bhawani Singh Road',
+   am:['Palace Gardens','Spa','Pool','Fine Dining','Heritage Tours'],b:'Royal',
+   img:'https://images.unsplash.com/photo-1477587458883-47145ed94245?w=400&q=80'},
+  {n:'Samode Palace',s:'⭐⭐⭐⭐⭐',t:'Heritage Hotel',p:28000,loc:'Samode Village',
+   am:['Pool','Heritage Tours','Spa','Rooftop Restaurant'],b:'Heritage',
+   img:'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=80'},
+  {n:'Jai Mahal Palace',s:'⭐⭐⭐⭐⭐',t:'Heritage Hotel',p:15000,loc:'Jacob Road',
+   am:['Pool','Heritage','Spa','Restaurant'],b:'Luxury',
+   img:'https://images.unsplash.com/photo-1549294413-26f195200c16?w=400&q=80'},
+  {n:'Clarks Amer',s:'⭐⭐⭐⭐',t:'City Hotel',p:6000,loc:'JLN Marg, Jaipur',
+   am:['Pool','Restaurant','Bar','WiFi'],b:'Value',
+   img:'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=400&q=80'},
+ ],
+ Dubai:[
+  {n:'Burj Al Arab',s:'⭐⭐⭐⭐⭐',t:'Luxury Hotel',p:130000,loc:'Jumeirah Beach',
+   am:['Private Beach','Helipad','Underwater Restaurant','Butler Service'],b:'Most Luxurious',
+   img:'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&q=80'},
+  {n:'Atlantis The Palm',s:'⭐⭐⭐⭐⭐',t:'Beach Resort',p:48000,loc:'Palm Jumeirah',
+   am:['Waterpark','Aquarium','Private Beach','Multiple Pools'],b:'Family Favorite',
+   img:'https://images.unsplash.com/photo-1517840901100-8179e982acb7?w=400&q=80'},
+  {n:'JBR Beach Hotel Dubai',s:'⭐⭐⭐⭐',t:'City Hotel',p:17000,loc:'JBR Walk, Dubai',
+   am:['Beach Access','Pool','Restaurant','Shopping Mall'],b:'Best Location',
+   img:'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=400&q=80'},
+ ],
+ Bali:[
+  {n:'COMO Uma Ubud',s:'⭐⭐⭐⭐⭐',t:'Jungle Resort',p:32000,loc:'Ubud',
+   am:['Infinity Pool','Spa','Yoga','Jungle View','Restaurant'],b:'Best Experience',
+   img:'https://images.unsplash.com/photo-1573548842355-73bb50e50b83?w=400&q=80'},
+  {n:'The Legian Seminyak',s:'⭐⭐⭐⭐⭐',t:'Beach Resort',p:28000,loc:'Seminyak Beach',
+   am:['Beachfront','Pool','Spa','Fine Dining','Bar'],b:'Luxury',
+   img:'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=400&q=80'},
+  {n:'Alaya Ubud',s:'⭐⭐⭐⭐',t:'Boutique Hotel',p:14000,loc:'Ubud Village',
+   am:['Pool','Spa','Yoga','Restaurant','Rice Terrace View'],b:'Boutique',
+   img:'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400&q=80'},
+  {n:'Kuta Paradiso Hotel',s:'⭐⭐⭐⭐',t:'City Hotel',p:7500,loc:'Kuta Beach Area',
+   am:['Pool','Restaurant','Bar','WiFi'],b:'Value Pick',
+   img:'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&q=80'},
+ ],
+ Singapore:[
+  {n:'Marina Bay Sands',s:'⭐⭐⭐⭐⭐',t:'City Hotel',p:58000,loc:'Marina Bay',
+   am:['Infinity Rooftop Pool','Casino','Skypark','ArtScience Museum'],b:'Iconic',
+   img:'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=400&q=80'},
+  {n:'Capella Singapore',s:'⭐⭐⭐⭐⭐',t:'Boutique Resort',p:65000,loc:'Sentosa Island',
+   am:['Pool','Spa','Private Beach','Fine Dining'],b:'Ultra Luxury',
+   img:'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=400&q=80'},
+  {n:'Hotel G Singapore',s:'⭐⭐⭐',t:'City Hotel',p:8500,loc:'Bencoolen Street',
+   am:['Restaurant','Bar','WiFi','Central Location'],b:'Budget Smart',
+   img:'https://images.unsplash.com/photo-1549294413-26f195200c16?w=400&q=80'},
+ ],
+};
+function getHtls(city){
+ if(HOTEL_DB[city]) return HOTEL_DB[city];
+ return [
+  {n:city+' Grand Resort',s:'⭐⭐⭐⭐⭐',t:'Luxury Hotel',p:22000,loc:'Central '+city,am:['Pool','Spa','Restaurant','WiFi'],b:'Luxury',img:'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&q=80'},
+  {n:city+' Heritage Hotel',s:'⭐⭐⭐⭐',t:'Heritage Hotel',p:9000,loc:'Old '+city,am:['Heritage','Restaurant','Bar'],b:'Heritage',img:'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=80'},
+  {n:city+' Budget Inn',s:'⭐⭐⭐',t:'City Hotel',p:3500,loc:city+' Center',am:['WiFi','Restaurant'],b:'Budget',img:'https://images.unsplash.com/photo-1549294413-26f195200c16?w=400&q=80'},
+ ];
+}
+
+const PKGS=[
+ {ico:'💑',n:'Honeymoon Bliss',p:'₹45,000',per:'/couple',d:'Romantic getaways for newlyweds — luxury hotel, candlelit dinners, couple spa & more.',f:['Luxury Hotel','Romantic Dinner','Couple Spa','Airport Transfer','Guided Tours','Travel Insurance']},
+ {ico:'👨‍👩‍👧‍👦',n:'Family Fiesta',p:'₹28,000',per:'/person (min 4)',d:'Fun family adventures with kid-friendly activities, comfortable stays & flexible itinerary.',f:['Family Rooms','Kids Activities','Theme Parks','All Meals','Medical Help','Flexible Plan']},
+ {ico:'🏔️',n:'Adventure Seeker',p:'₹22,000',per:'/person',d:'Trekking, rafting, camping & adrenaline experiences for the bold traveler.',f:['Trekking','River Rafting','Camping','Safety Gear','Expert Guides','Certificate']},
+ {ico:'✈️',n:'International Explorer',p:'₹95,000',per:'/person',d:'Multi-country trips with flights, visas, hotels & tours all handled by us.',f:['Visa Assistance','Intl Flights','4-Star Hotels','Multi-City Tour','Travel Insurance','24/7 Support']},
+ {ico:'🧘',n:'Wellness Retreat',p:'₹38,000',per:'/person',d:'Ayurveda, yoga, meditation & nature escapes to rejuvenate body and soul.',f:['Ayurveda Spa','Yoga Classes','Organic Meals','Nature Walks','Detox Program','Therapists']},
+ {ico:'💼',n:'Corporate Getaway',p:'Custom',per:'/quote',d:'MICE events, team outings, conferences & incentive trips managed end-to-end.',f:['MICE Events','Team Activities','Conference Rooms','Group Discounts','Dedicated Manager','Custom Plan']},
+];
+
+const PKG_STEPS=[
+ {id:'dest',t:'Destination',e:'🌍',opts:DESTS.map(d=>({e:d.e,n:d.n,sub:d.c,price:0,photo:d.photo}))},
+ {id:'dur',t:'Duration',e:'📅',opts:[{e:'🌅',n:'3 Nights',sub:'4 Days',price:0},{e:'🌄',n:'5 Nights',sub:'6 Days',price:5000},{e:'🌠',n:'7 Nights',sub:'8 Days',price:12000},{e:'🏕️',n:'10 Nights',sub:'11 Days',price:22000},{e:'🌍',n:'14 Nights',sub:'15 Days',price:38000}]},
+ {id:'hotel',t:'Hotel Category',e:'🏨',opts:[{e:'🏠',n:'Budget',sub:'2-3 Star',price:2500},{e:'🏩',n:'Standard',sub:'4 Star',price:5000},{e:'🏰',n:'Premium',sub:'5 Star',price:10000},{e:'💎',n:'Luxury',sub:'5 Star Deluxe',price:18000},{e:'🛥️',n:'Unique Stay',sub:'Villa / Houseboat',price:14000}]},
+ {id:'trans',t:'Transport',e:'🚗',opts:[{e:'🚌',n:'Shared Bus',sub:'Budget',price:500},{e:'🚗',n:'Private Car',sub:'Comfortable',price:2000},{e:'🚙',n:'Premium SUV',sub:'Luxury',price:4000},{e:'✈️',n:'Include Flights',sub:'Roundtrip',price:15000}]},
+ {id:'meals',t:'Meal Plan',e:'🍽️',opts:[{e:'☕',n:'Breakfast Only',sub:'',price:0},{e:'🍱',n:'Half Board',sub:'Bfast + Dinner',price:1500},{e:'🍽️',n:'Full Board',sub:'All 3 meals',price:3000},{e:'🥂',n:'All-Inclusive',sub:'Meals + Drinks',price:5000}]},
+ {id:'acts',t:'Activities',e:'🎯',opts:[{e:'🚶',n:'Sightseeing',sub:'City tours',price:1500},{e:'🤿',n:'Water Sports',sub:'Snorkeling etc.',price:3000},{e:'🧘',n:'Spa & Yoga',sub:'Wellness',price:2500},{e:'🏕️',n:'Adventure',sub:'Trekking etc.',price:3500},{e:'🎭',n:'Cultural',sub:'Shows & Food',price:2000},{e:'🎉',n:'Everything!',sub:'All included',price:8000}]},
+ {id:'trav',t:'No. of Travelers',e:'👥',opts:[{e:'🧍',n:'Solo',sub:'1 Person',price:0,m:1},{e:'👫',n:'Couple',sub:'2 People',price:0,m:2},{e:'👨‍👩‍👧',n:'Family 3',sub:'3 People',price:0,m:3},{e:'👨‍👩‍👧‍👦',n:'Family 4',sub:'4 People',price:0,m:4},{e:'👥',n:'Group 6+',sub:'6+ People',price:-1500,m:6}]},
+];
+
+const AIRLINES=[
+ {n:'IndiGo',e:'🔵',c:'6E',col:'#1a52a0'},{n:'Air India',e:'🔴',c:'AI',col:'#b22222'},
+ {n:'SpiceJet',e:'🟠',c:'SG',col:'#e05c00'},{n:'Vistara',e:'🟣',c:'UK',col:'#5b2d8e'},
+ {n:'Emirates',e:'🟢',c:'EK',col:'#c8102e'},{n:'Singapore Airlines',e:'⭐',c:'SQ',col:'#0033a0'},
+];
+
+const BG={
+ dest:'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1400&q=50',
+ flights:'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1400&q=50',
+ hotels:'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1400&q=50',
+ customize:'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1400&q=50',
+ pkg:'https://images.unsplash.com/photo-1488085061387-422e29b40080?w=1400&q=50',
+ book:'https://images.unsplash.com/photo-1503220317375-aaad61436b1b?w=1400&q=50',
+};
+
+// ── INIT ─────────────────────────────────────────────────────────────
+window.onload=()=>{
+ setDates();
+ renderSB();
+ renderDests();
+ renderPkgs();
+ renderPkgBuilder();
+ addWelcome();
+ setTimeout(()=>{if(!botOpen&&!botInit) document.getElementById('badge').style.display='flex'},5000);
+};
+
+function setDates(){
+ const t=new Date().toISOString().split('T')[0];
+ ['fdep','fret','htin','htout','bdate'].forEach(id=>{const e=document.getElementById(id);if(e){e.min=t;e.value=t;}});
+}
+
+function setBg(tab){
+ const el=document.getElementById('bg-img');
+ if(BG[tab]){el.style.backgroundImage='url('+BG[tab]+')';el.style.opacity='0.18';}
+ else el.style.opacity='0';
+}
+
+// ── TABS ─────────────────────────────────────────────────────────────
+function goTab(tab,sbBtn,tabBtn){
+ document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+ document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+ document.getElementById(tab+'-panel').classList.add('active');
+ const mt=document.querySelector('.tab[data-t="'+tab+'"]');
+ if(mt) mt.classList.add('active');
+ if(sbBtn) sbBtn.classList.add('active');
+ if(tabBtn) tabBtn.classList.add('active');
+ setBg(tab);
+}
+
+// ── SIDEBAR ──────────────────────────────────────────────────────────
+function renderSB(){
+ const sbDests=[
+  {f:'🏖️',n:'Goa',p:'₹15,000'},{f:'🐠',n:'Maldives',p:'₹65,000'},{f:'🌺',n:'Bali',p:'₹45,000'},
+  {f:'🏔️',n:'Manali',p:'₹12,000'},{f:'🏙️',n:'Dubai',p:'₹55,000'},{f:'🗼',n:'Singapore',p:'₹50,000'},
+  {f:'⛩️',n:'Japan',p:'₹1,20,000'},{f:'🌴',n:'Kerala',p:'₹20,000'},
+ ];
+ document.getElementById('sbdl').innerHTML=sbDests.map(d=>`<div class="dc" onclick="abt('${d.n}')"><span class="flag">${d.f}</span><div><div class="dn">${d.n}</div><div class="dp">From ${d.p}</div></div></div>`).join('');
+}
+
+// ── DESTINATIONS ─────────────────────────────────────────────────────
+function renderDests(){
+ document.getElementById('destgrid').innerHTML=DESTS.map(d=>`
+  <div class="dcard" onclick="abt('${d.n}')">
+   <div class="dphoto" style="background:${d.bg}">
+    <img src="${d.photo}" alt="${d.n}" onerror="this.style.display='none'">
+    <div class="dphoto-ov"></div>
+    <div class="dphoto-em">${d.e}</div>
+    <div class="dphoto-price">${d.p}</div>
+    <div class="dphoto-nights">${d.ni}</div>
+   </div>
+   <div class="dbody">
+    <div class="dname">${d.n}</div>
+    <div class="dcountry">📍 ${d.c} · Best: ${d.season}</div>
+    <div class="dtags">${d.tags.map(t=>`<span class="dtag">${t}</span>`).join('')}</div>
+    <div class="dfooter">
+     <button class="aibtn" onclick="event.stopPropagation();abt('${d.n}')">Ask Luna ✦</button>
+     <button class="bkbtn" onclick="event.stopPropagation();goBk('${d.n}')">Book Now</button>
+    </div>
+   </div>
+  </div>`).join('');
+}
+
+function goBk(name){
+ goTab('book');
+ setTimeout(()=>{const s=document.getElementById('bd');for(let i=0;i<s.options.length;i++)if(s.options[i].text.includes(name)){s.selectedIndex=i;break;}},100);
+}
+
+// ── PACKAGES ─────────────────────────────────────────────────────────
+function renderPkgs(){
+ document.getElementById('pklist').innerHTML=PKGS.map(p=>`
+  <div class="pkcard">
+   <div class="pkico">${p.ico}</div>
+   <div class="pkinfo">
+    <div class="pkname">${p.n}</div>
+    <div class="pkdesc">${p.d}</div>
+    <div class="pkfeats">${p.f.map(f=>`<span class="pkf">✓ ${f}</span>`).join('')}</div>
+    <div class="pkfoot"><div><span class="pkprice">${p.p}</span><span class="pkper"> ${p.per}</span></div>
+    <button class="pkbtn" onclick="abt('${p.n} package')">Enquire Now</button></div>
+   </div>
+  </div>`).join('');
+}
+
+// ── FLIGHT SEARCH ────────────────────────────────────────────────────
+let tripType='one';
+function setTrip(t,btn){
+ tripType=t;
+ document.querySelectorAll('.ttb').forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');
+ document.getElementById('retrow').style.display=t==='rt'?'block':'none';
+}
+function swpCities(){
+ const f=document.getElementById('ffrom'),t=document.getElementById('fto');
+ const fv=f.value,tv=t.value;
+ for(let i=0;i<f.options.length;i++)if(f.options[i].value===tv){f.selectedIndex=i;break;}
+ for(let i=0;i<t.options.length;i++)if(t.options[i].value===fv){t.selectedIndex=i;break;}
+}
+
+function searchFlts(){
+ const from=document.getElementById('ffrom'),to=document.getElementById('fto');
+ const dep=document.getElementById('fdep').value,pax=document.getElementById('fpax').value,cls=document.getElementById('fcls').value,pref=document.getElementById('fal').value;
+ if(!dep){toast('⚠️','Please select departure date');return;}
+ if(from.value===to.value){toast('⚠️','Origin and destination cannot be same');return;}
+ const ft=from.options[from.selectedIndex].text,tt=to.options[to.selectedIndex].text;
+ const np=parseInt(pax)||1;
+ const res=document.getElementById('fres');
+ res.innerHTML='<div style="text-align:center;padding:20px;color:var(--mut);font-size:12px">🔍 Searching '+ft+' → '+tt+'…</div>';
+ setTimeout(()=>{
+  const flights=genFlts(ft,tt,np,cls,pref);
+  res.innerHTML='<div style="margin-bottom:9px;font-size:11px;color:var(--mut)">'+flights.length+' flights found · '+ft+' → '+tt+' · '+dep+'</div>'+
+   '<div class="fres">'+flights.map((f,i)=>`
+    <div class="fcard">
+     <div class="alogo" style="background:${f.col}22;border:1px solid ${f.col}44;font-size:16px">${f.e}</div>
+     <div class="frt">
+      <div class="ftimes">
+       <span class="fdep">${f.dep}</span>
+       <div class="fline">
+        <div class="fdur">${f.dur}</div>
+        <div class="fline-bar"></div>
+        <div class="fstops" style="color:${f.stops===0?'var(--grn)':'var(--gold)'};font-size:9px;margin-top:2px">${f.stops===0?'Non-stop':f.stops+' stop'}</div>
+       </div>
+       <span class="farr">${f.arr}</span>
+      </div>
+      <div class="fcities">${f.al} · ${f.code} · ${cls}</div>
+     </div>
+     <div class="fpbox">
+      <div class="fprice">₹${f.p.toLocaleString('en-IN')}</div>
+      <div class="fper">per person</div>
+      <div style="font-size:9px;color:var(--mut)">Total ₹${(f.p*np).toLocaleString('en-IN')}</div>
+      <button class="fbookbtn" onclick="bkFlt('${f.al}','${ft}','${tt}','${dep}',${f.p},${np},'${cls}')">Select & Book →</button>
+     </div>
+    </div>`).join('')+'</div>';
+ },1200);
+}
+
+function genFlts(from,to,pax,cls,pref){
+ const base=to.includes('Dubai')||to.includes('Singapore')?18000:to.includes('Maldives')||to.includes('Bali')?23000:to.includes('Bangkok')?15000:to.includes('Tokyo')?35000:6000;
+ const m=cls==='Business'?3.5:cls==='First Class'?6:cls==='Premium Economy'?1.8:1;
+ const als=pref?AIRLINES.filter(a=>a.n.toLowerCase().includes(pref.toLowerCase())):AIRLINES;
+ const use=als.length?als:AIRLINES;
+ const times=[['06:00','08:30','2h 30m',0],['09:15','11:50','2h 35m',0],['13:00','16:00','3h 00m',1],['17:30','20:45','3h 15m',0]];
+ return times.map((t,i)=>{
+  const al=use[i%use.length];
+  const p=Math.round(base*m*(1+(Math.random()*0.3-0.1))/100)*100;
+  return{al:al.n,e:al.e,code:al.c+Math.floor(1000+Math.random()*9000),col:al.col,dep:t[0],arr:t[1],dur:t[2],stops:t[3],p};
+ }).sort((a,b)=>a.p-b.p);
+}
+
+function bkFlt(al,from,to,date,price,pax,cls){
+ openMod('✈️ Confirm Flight Booking','Select to confirm your flight',
+  [['Airline',al],['Route',from+' → '+to],['Date',date],['Class',cls],['Passengers',pax],['Price/person','₹'+price.toLocaleString('en-IN')],['Total Amount','₹'+(price*pax).toLocaleString('en-IN')]],
+  ()=>{toast('✅','Flight confirmed! Our team will call you within 2 hours. 📞 +91 98765 43210');clsMod();}
+ );
+}
+
+// ── HOTEL SEARCH ─────────────────────────────────────────────────────
+function searchHtls(){
+ const city=document.getElementById('hcity').value,hi=document.getElementById('htin').value,ho=document.getElementById('htout').value,mp=document.getElementById('hprice').value,ht=document.getElementById('htype').value;
+ if(!hi||!ho){toast('⚠️','Please select check-in and check-out dates');return;}
+ const nights=Math.max(1,Math.round((new Date(ho)-new Date(hi))/(86400000)));
+ let hotels=getHtls(city);
+ if(mp) hotels=hotels.filter(h=>h.p<=parseInt(mp));
+ if(ht) hotels=hotels.filter(h=>h.t.toLowerCase().includes(ht.toLowerCase().split(' ')[0]));
+ const grid=document.getElementById('hres');
+ if(!hotels.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--mut);font-size:13px">😔 No hotels found. Try adjusting filters.</div>';return;}
+ grid.innerHTML=hotels.map(h=>`
+  <div class="hcard">
+   <div class="hphoto">
+    <img src="${h.img}" alt="${h.n}" onerror="this.style.display='none'">
+    <div class="hstars">${h.s}</div>
+    ${h.b?`<div class="hbadge">${h.b}</div>`:''}
+   </div>
+   <div class="hbody">
+    <div class="hname">${h.n}</div>
+    <div class="hloc">📍 ${h.loc} · ${h.t}</div>
+    <div class="hams">${h.am.map(a=>`<span class="ham">✓ ${a}</span>`).join('')}</div>
+    <div class="hfoot">
+     <div>
+      <div class="hprice">₹${h.p.toLocaleString('en-IN')}<span class="hper">/night</span></div>
+      <div style="font-size:9px;color:var(--grn)">₹${(h.p*nights).toLocaleString('en-IN')} total (${nights} nights)</div>
+     </div>
+     <button class="hbookbtn" onclick="bkHtl('${h.n}','${city}','${hi}','${ho}',${h.p},${nights})">Book Room</button>
+    </div>
+   </div>
+  </div>`).join('');
+}
+
+function bkHtl(name,city,ci,co,p,n){
+ openMod('🏨 Confirm Hotel Booking','Reserve your room at '+name,
+  [['Hotel',name],['City',city],['Check-in',ci],['Check-out',co],['Nights',n],['Price/night','₹'+p.toLocaleString('en-IN')],['Total','₹'+(p*n).toLocaleString('en-IN')]],
+  ()=>{toast('✅','Hotel reserved! Team will confirm within 2 hours. 📞 +91 98765 43210');clsMod();}
+ );
+}
+
+// ── PACKAGE BUILDER ───────────────────────────────────────────────────
+let pkgSel={},pkgMult=1;
+
+function renderPkgBuilder(){
+ document.getElementById('psteps').innerHTML=PKG_STEPS.map((s,si)=>`
+  <div class="scard" id="sc-${s.id}">
+   <div class="shead">
+    <div class="snum" id="sn-${s.id}">${si+1}</div>
+    <div class="stitle">${s.e} ${s.t}</div>
+   </div>
+   <div class="ogrid">${s.opts.map((o,oi)=>`
+    <div class="obtn" id="ob-${s.id}-${oi}" onclick="selOpt('${s.id}',${oi})">
+     <div class="oem">${o.e}</div>
+     <div class="oname">${o.n}</div>
+     <div class="osub">${o.sub}${o.price>0?' +₹'+o.price.toLocaleString('en-IN'):o.price<0?' -₹'+Math.abs(o.price).toLocaleString('en-IN'):''}</div>
+    </div>`).join('')}
+   </div>
+  </div>`).join('');
+ updSum();
+}
+
+function selOpt(sid,oi){
+ const s=PKG_STEPS.find(x=>x.id===sid);
+ s.opts.forEach((_,i)=>{const e=document.getElementById('ob-'+sid+'-'+i);if(e)e.classList.remove('sel');});
+ document.getElementById('ob-'+sid+'-'+oi).classList.add('sel');
+ pkgSel[sid]={opt:s.opts[oi],idx:oi};
+ if(sid==='trav') pkgMult=s.opts[oi].m||1;
+ const sn=document.getElementById('sn-'+sid);
+ sn.textContent='✓';sn.classList.add('done');
+ updSum();
+}
+
+function updSum(){
+ const rows=document.getElementById('sumrows'),tot=document.getElementById('sumtot'),img=document.getElementById('sumimg');
+ let html='',total=0,dp='';
+ PKG_STEPS.forEach(s=>{
+  const sel=pkgSel[s.id];
+  if(sel){
+   const pr=sel.opt.price,ps=pr>0?'+₹'+pr.toLocaleString('en-IN'):pr<0?'-₹'+Math.abs(pr).toLocaleString('en-IN'):'Included';
+   html+=`<div class="srow"><span class="sk">${s.e} ${s.t}</span><span class="sv">${sel.opt.n} <span style="color:var(--gold)">${ps}</span></span></div>`;
+   if(s.id==='dest'&&sel.opt.photo) dp=sel.opt.photo;
+  }
+ });
+ const base=pkgSel.dest?12000:0;
+ total=base;
+ PKG_STEPS.forEach(s=>{const sel=pkgSel[s.id];if(sel)total+=sel.opt.price||0;});
+ total=Math.max(0,total*pkgMult);
+ rows.innerHTML=html||'<div style="color:var(--mut);font-size:11px;text-align:center;padding:8px">Select options to build ✨</div>';
+ tot.textContent=total>0?'₹'+total.toLocaleString('en-IN'):'₹0';
+ img.innerHTML=dp?`<img class="sum-img" src="${dp}" alt="dest" onerror="this.style.display='none'">`:'<div class="sum-ph">🌍</div>';
+}
+
+function confPkg(){
+ if(Object.keys(pkgSel).length<3){toast('⚠️','Please select at least destination, duration & hotel');return;}
+ const dest=pkgSel.dest?.opt.n||'Custom',tot=document.getElementById('sumtot').textContent,dur=pkgSel.dur?.opt.n||'',trav=pkgSel.trav?.opt.n||'Solo';
+ const rows=PKG_STEPS.filter(s=>pkgSel[s.id]).map(s=>[s.e+' '+s.t,pkgSel[s.id].opt.n]);
+ rows.push(['Estimated Total',tot]);
+ openMod('🌙 Confirm Your Package','Custom '+dest+' trip for '+trav,rows,
+  ()=>{toast('✅','Package confirmed! Expert will call you within 24 hours. 📞 +91 98765 43210');clsMod();goTab('chat');addAI('🎉 <strong>Package Booked!</strong><br><br>Your custom <strong>'+dest+'</strong> trip is confirmed ('+dur+' for '+trav+')!<br><br>Our travel expert will call you within <strong>24 hours</strong> to finalise. 📞 <strong>+91 98765 43210</strong><br><br>Anything else I can help you with? 🌙');}
+ );
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────
+function openMod(title,desc,rows,cb){
+ document.getElementById('modtitle').textContent=title;
+ document.getElementById('moddesc').textContent=desc;
+ document.getElementById('modrows').innerHTML=rows.map(r=>`<div class="mrow"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('');
+ document.getElementById('mconf').onclick=cb;
+ document.getElementById('movl').classList.add('open');
+}
+function clsMod(e){if(!e||e.target===document.getElementById('movl'))document.getElementById('movl').classList.remove('open');}
+
+// ── LUNA AI BRAIN ─────────────────────────────────────────────────────
+function luna(msg){
+ const q=msg.toLowerCase().replace(/[?!.,]/g,'').trim();
+ const has=(...w)=>w.some(x=>q.includes(x));
+
+ if(['hello','hi','hey','namaste','good morning','good evening','howdy'].some(g=>q===g||q.startsWith(g)))
+  return `👋 <strong>Namaste!</strong> Welcome to Moon Connect Travels!<br><br>Main <strong>Luna</strong> hoon — aapki AI Travel Assistant! 🌙<br><br>Aaj main aapki madad kar sakti hoon:<br>✈️ <strong>Flights</strong> — real-time search & book<br>🏨 <strong>Hotels</strong> — photos, ratings & prices<br>🎨 <strong>Build Package</strong> — apna package khud banayein<br>🌍 <strong>Destinations</strong> — 12 destinations real photos ke saath<br>🛂 <strong>Visa Help</strong> — har country ke liye<br><br>Aap kahan jaana chahte hain? 🌟`;
+
+ if(['thanks','thank you','shukriya','dhanyawad'].some(g=>q.includes(g)))
+  return `Bahut bahut shukriya! 😊 Aapki help karna mujhe bahut accha lagta hai!<br><br>Koi bhi sawaal ho — <strong>destination, visa, budget, flights, hotels</strong> — main yahan hoon! 🌙`;
+
+ if(['bye','goodbye','see you','take care'].some(g=>q.includes(g)))
+  return `Happy travels! 🌟 Safar mubarak ho!<br>Moon Connect Travels hamesha aapke saath hai.<br>📞 <strong>+91 98765 43210</strong> 🌙`;
+
+ if(has('about','who are you','moonconnect','company','kya hai'))
+  return `🌙 <strong>Moon Connect Travels</strong> — Jaipur, Rajasthan<br><br>Hum offer karte hain:<br>✈️ Domestic & International Packages<br>💑 Honeymoon & Romance<br>👨‍👩‍👧‍👦 Family Holidays<br>🏔️ Adventure Tours<br>💼 Corporate Travel & MICE<br>🛂 Visa Assistance<br>🏨 Hotel & Flight Booking<br><br>📞 <strong>+91 98765 43210</strong><br>✉️ <strong>info@moonconnecttravels.com</strong>`;
+
+ if(has('contact','phone','call','whatsapp','email','address','number'))
+  return `📞 <strong>+91 98765 43210</strong> (Call / WhatsApp)<br>✉️ <strong>info@moonconnecttravels.com</strong><br>📍 Jaipur, Rajasthan, India<br><br>9AM–8PM IST · Response within 2 hours 🕘`;
+
+ // Visa
+ const visa={dubai:'✅ Visa on Arrival (30 days, FREE for Indians!)',singapore:'✅ Visa on Arrival (30 days, free)',thailand:'✅ Visa on Arrival (15-30 days, free or ₹3,500)',maldives:'✅ FREE Visa on Arrival — no pre-apply!',bali:'✅ Visa on Arrival ($35, 30 days)',europe:'⏳ Schengen Visa required — apply 3 months ahead',japan:'⏳ Tourist Visa required — Japan Consulate (5-7 days)',usa:'⏳ B1/B2 Visa — Embassy interview needed (2-3 months)',australia:'⏳ Tourist Visa Subclass 600 — online (1-4 weeks)',kenya:'✅ e-Visa online (evisa.go.ke) — easy & fast!'};
+ for(const [place,info] of Object.entries(visa)){
+  if(q.includes(place)) return `🛂 <strong>${place.charAt(0).toUpperCase()+place.slice(1)} Visa:</strong><br><br>${info}<br><br>Documents banane mein bhi hum help karte hain! 📋 Call: <strong>+91 98765 43210</strong>`;
+ }
+ if(has('visa','passport','document','immigration','entry'))
+  return `🛂 <strong>Visa on Arrival (Indians ke liye FREE):</strong><br>✅ Dubai, Singapore, Thailand, Maldives, Bali<br><br>⏳ <strong>Pre-apply required:</strong><br>Europe, Japan, USA, Australia, UK<br><br>Specific country ke baare mein poochho — poori details dunga! 🌍`;
+
+ // Destinations
+ for(const d of DESTS){
+  if(q.includes(d.id)||q.includes(d.n.toLowerCase())){
+   return `${d.e} <strong>${d.n} Tour Package</strong><br><br>💰 <strong>Price:</strong> From ${d.p} (${d.ni})<br>📅 <strong>Best Time:</strong> ${d.season}<br>⭐ <strong>Highlights:</strong> ${d.hl}<br>🍽️ <strong>Must-eat:</strong> ${d.food}<br>💡 <strong>Pro Tip:</strong> ${d.tip}<br><br>✈️ <strong>Flight</strong> ya 🏨 <strong>Hotel</strong> book karna hai? Ya 🎨 <strong>Custom Package</strong> banana? 🌟`;
+  }
+ }
+
+ if(has('honeymoon','romantic','couple','anniversary','newlywed','naya shaadi','shaadi'))
+  return `💑 <strong>Honeymoon Package — ₹45,000/couple:</strong><br><br>✓ Luxury Hotel · ✓ Romantic Dinner · ✓ Couple Spa<br>✓ Airport Transfers · ✓ Guided Tours · ✓ Insurance<br><br><strong>Best Honeymoon Spots:</strong><br>🐠 Maldives · 🌺 Bali · 🏖️ Goa · 🌴 Kerala<br><br>🎨 <strong>Build Package</strong> tab mein apna honeymoon customize karein! 💕`;
+
+ if(has('family','kids','children','parents','bachche','parivar'))
+  return `👨‍👩‍👧‍👦 <strong>Family Package — ₹28,000/person:</strong><br><br>✓ Family Rooms · ✓ Kids Activities · ✓ Theme Parks<br>✓ All Meals · ✓ Medical Help · ✓ Flexible Plan<br><br><strong>Best Family Destinations:</strong><br>🗼 Singapore · 🏙️ Dubai · 🏖️ Goa · 🏰 Rajasthan · 🛕 Thailand`;
+
+ if(has('adventure','trek','trekking','rafting','camping','hiking','thrilling','adrenaline'))
+  return `🏔️ <strong>Adventure Package — ₹22,000/person:</strong><br><br>✓ Trekking · ✓ River Rafting · ✓ Camping<br>✓ Safety Gear · ✓ Expert Guides · ✓ Certificate<br><br><strong>Best Adventure Spots:</strong><br>🏔️ Manali · 🌊 Rishikesh · 🏕️ Ladakh · 🌿 Coorg`;
+
+ if(has('budget','cheap','affordable','under','₹','kam','sasta'))
+  return `💰 <strong>Budget Options:</strong><br><br>🟢 <strong>Under ₹15,000:</strong> Manali, Ooty, Coorg, Pondicherry<br>🟡 <strong>₹15K–₹40K:</strong> Goa, Rajasthan, Kerala, Thailand<br>🔴 <strong>₹40K–₹70K:</strong> Bali, Dubai, Singapore, Maldives<br><br>🎨 <strong>Build Package</strong> tab mein apna budget set karein! 🎯`;
+
+ if(has('flight','fly','ticket','airline','udan','udna','hawa jahaz'))
+  return `✈️ <strong>Flight Booking:</strong><br><br>✈️ Tab mein jaao aur apna flight search karo!<br><br>Hum book karte hain:<br>🔵 IndiGo · 🔴 Air India · 🟠 SpiceJet · 🟣 Vistara<br>🟢 Emirates · ⭐ Singapore Airlines<br><br>💡 <strong>Best deal tip:</strong> Domestic = 4-6 hafte pahle book karo. International = 2-3 mahine pahle!`;
+
+ if(has('hotel','resort','stay','ruk','accomm','room','kaha ruke'))
+  return `🏨 <strong>Hotel Search:</strong><br><br>🏨 Tab mein jaao — real photos, ratings aur instant booking!<br><br>Hum offer karte hain:<br>💎 Luxury (Taj, Oberoi) · ⭐ 4-Star · 🏠 Budget<br>🛥️ Unique Stays (Houseboat, Heritage Haveli, Treehouse)<br><br>Kis city ka hotel chahiye? 🌍`;
+
+ if(has('package','customize','build my','apna','khud','banana'))
+  return `🎨 <strong>Custom Package Builder:</strong><br><br>🎨 <strong>Build Package</strong> tab mein jaao aur choose karo:<br>✓ Destination · ✓ Duration · ✓ Hotel Type<br>✓ Transport · ✓ Meal Plan · ✓ Activities · ✓ No. of Travelers<br><br>Price <strong>automatically calculate</strong> hoti hai! 💰<br><br>Apna perfect trip banao — 100% aapki marzi! 🌟`;
+
+ if(has('book','booking','reserve','enquir','inquiry','kaise book'))
+  return `📋 <strong>Book kaise karein:</strong><br><br>1️⃣ <strong>📋 Book</strong> tab — inquiry form<br>2️⃣ <strong>✈️ Flights</strong> tab — direct flight book<br>3️⃣ <strong>🏨 Hotels</strong> tab — room book<br>4️⃣ <strong>🎨 Build Package</strong> — customize karo<br>5️⃣ Call/WhatsApp: <strong>+91 98765 43210</strong><br><br>Hamare experts 24 ghante mein call karenge! 🌙`;
+
+ if(has('season','best time','when','kab','mausam','weather','garmi','sardi'))
+  return `📅 <strong>Best Time to Visit:</strong><br>🏖️ Goa: Nov–Mar (Beach season)<br>🌴 Kerala: Sep–Mar (Backwaters)<br>🏔️ Manali: Oct–Jun (Snow: Dec–Feb)<br>🏰 Rajasthan: Oct–Mar (Heritage)<br>🐠 Maldives: Nov–Apr (Crystal water)<br>🌺 Bali: Apr–Oct (Dry season)<br>🏙️ Dubai: Nov–Apr (Cool weather)<br>⛩️ Japan: Mar–May (Sakura) or Oct–Nov<br><br>Specific destination batao — full weather guide dunga! ☀️`;
+
+ if(has('india','domestic','ghar','desh','within india'))
+  return `🇮🇳 <strong>Best Domestic Trips:</strong><br>🏖️ Goa — ₹15,000 (4N/5D)<br>🏰 Rajasthan — ₹18,000 (5N/6D)<br>🌴 Kerala — ₹20,000 (5N/6D)<br>🏔️ Manali — ₹12,000 (4N/5D)<br>🌿 Coorg — ₹10,000 (3N/4D)<br>🌊 Andaman — ₹25,000 (4N/5D)<br>🏕️ Ladakh — ₹22,000 (5N/6D)<br><br>🌍 Destinations tab mein real photos ke saath dekho! 📸`;
+
+ if(has('international','foreign','abroad','bahar','videsh','overseas'))
+  return `✈️ <strong>International Packages:</strong><br>🐠 Maldives — ₹65,000 (4N/5D)<br>🌺 Bali — ₹45,000 (5N/6D)<br>🛕 Thailand — ₹35,000 (5N/6D)<br>🏙️ Dubai — ₹55,000 (4N/5D)<br>🗼 Singapore — ₹50,000 (4N/5D)<br>🗺️ Europe — ₹1,50,000 (10N/11D)<br>⛩️ Japan — ₹1,20,000 (7N/8D)<br><br>Sab mein flights, visa, hotel & tours shamil! 🌟`;
+
+ return `Aapki baat samajh aayi! 🌙<br><br>Yeh sab mein madad kar sakti hoon:<br>• 💑 Honeymoon / romantic trips<br>• ✈️ Flight search & booking<br>• 🏨 Hotel search with photos<br>• 🎨 Custom package banana<br>• 🌍 Destination details<br>• 🛂 Visa requirements<br>• 💰 Budget planning<br><br>Bas poochho — main yahan hoon! 😊`;
+}
+
+// ── CHAT ──────────────────────────────────────────────────────────────
+function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function addWelcome(){
+ addAI(`<h4>🌙 Moon Connect Travels mein Swagat hai!</h4>
+Main <strong>Luna</strong> hoon — aapka AI Travel Assistant!<br><br>
+Aaj ke nayi features:<br>
+✈️ <strong>Flight Booking</strong> — khud search karo & book karo<br>
+🏨 <strong>Hotel Search</strong> — real photos ke saath compare & book<br>
+🎨 <strong>Build My Package</strong> — apna package 100% customize karo<br>
+🌍 <strong>12 Destinations</strong> — real beach & hotel photos<br><br>
+Kahan jaana chahte ho? 🌟`);
+}
+
+function addAI(html){
+ const m=document.getElementById('chatmsgs'),d=document.createElement('div');
+ d.className='msg';d.innerHTML=`<div class="av ai">🌙</div><div class="bub">${html}</div>`;
+ m.appendChild(d);m.scrollTop=m.scrollHeight;
+}
+function addUser(text){
+ const m=document.getElementById('chatmsgs'),d=document.createElement('div');
+ d.className='msg user';d.innerHTML=`<div class="av user">👤</div><div class="bub user">${esc(text)}</div>`;
+ m.appendChild(d);m.scrollTop=m.scrollHeight;
+}
+function addTyp(){
+ const m=document.getElementById('chatmsgs'),d=document.createElement('div');
+ d.className='msg';d.id='typ';d.innerHTML=`<div class="av ai">🌙</div><div class="bub"><div class="typing"><span></span><span></span><span></span></div></div>`;
+ m.appendChild(d);m.scrollTop=m.scrollHeight;
+}
+function remTyp(){const e=document.getElementById('typ');if(e)e.remove();}
+
+async function sendMsg(){
+ const ci=document.getElementById('ci'),text=ci.value.trim();if(!text)return;
+ ci.value='';ci.style.height='auto';addUser(text);
+ document.getElementById('sb2').disabled=true;addTyp();
+ await new Promise(r=>setTimeout(r,600+Math.random()*500));
+ remTyp();addAI(luna(text));document.getElementById('sb2').disabled=false;
+}
+function hkey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}const t=e.target;t.style.height='auto';t.style.height=Math.min(t.scrollHeight,90)+'px';}
+function qa(q){document.getElementById('ci').value=q;sendMsg();}
+function abt(name){goTab('chat');qa('Tell me about '+name+' — price, best time, highlights and tips?');}
+
+// ── BOOKING FORM ──────────────────────────────────────────────────────
+function submitBook(){
+ const n=document.getElementById('bn').value.trim(),p=document.getElementById('bp').value.trim(),d=document.getElementById('bd').value;
+ if(!n||!p||!d){toast('⚠️','Please fill name, phone & destination');return;}
+ toast('✅','Inquiry sent! We will call '+n.split(' ')[0]+' within 24 hrs. 📞');
+ ['bn','bp','be','bdate','btrav','bmsg'].forEach(id=>document.getElementById(id).value='');
+ ['bd','bbudget','btype'].forEach(id=>document.getElementById(id).selectedIndex=0);
+ setTimeout(()=>{goTab('chat');addAI('🎉 <strong>Booking Inquiry Received!</strong><br><br>Thank you <strong>'+esc(n)+'</strong>! Our expert will call <strong>'+esc(p)+'</strong> within <strong>24 hours</strong>.<br><br>Tab tak, <strong>'+esc(d)+'</strong> ke liye flights ya hotels dhundh sakte ho! 🌙');},500);
+}
+
+// ── FLOATING BOT ──────────────────────────────────────────────────────
+let botOpen=false,botInit=false;
+function togBot(){
+ botOpen=!botOpen;
+ const w=document.getElementById('botwin'),f=document.getElementById('fab');
+ w.classList.toggle('open',botOpen);f.classList.toggle('open',botOpen);
+ f.innerHTML=botOpen?'✕':'🌙<span id="badge" class="unread" style="display:none;position:absolute">1</span>';
+ if(botOpen){document.getElementById('badge')&&(document.getElementById('badge').style.display='none');if(!botInit){botInit=true;bWelc();}setTimeout(()=>document.getElementById('botin').focus(),300);}
+}
+function bWelc(){bAddAI('👋 Hi! Main <strong>Luna</strong> hoon!<br><br>✈️ Flights · 🏨 Hotels · 🎨 Package Builder · 🌍 Destinations<br><br><strong>Kahan jaana chahte ho?</strong> 🌙');}
+function bAddAI(html){const m=document.getElementById('botmsgs'),d=document.createElement('div');d.className='bmsg';d.innerHTML=`<div class="bico ai">🌙</div><div class="bbub">${html}</div>`;m.appendChild(d);m.scrollTop=m.scrollHeight;}
+function bAddUser(t){const m=document.getElementById('botmsgs'),d=document.createElement('div');d.className='bmsg buser';d.innerHTML=`<div class="bico usr">👤</div><div class="bbub ubub">${esc(t)}</div>`;m.appendChild(d);m.scrollTop=m.scrollHeight;}
+function bAddTyp(){const m=document.getElementById('botmsgs'),d=document.createElement('div');d.className='bmsg';d.id='btyp';d.innerHTML=`<div class="bico ai">🌙</div><div class="bbub"><div class="btyp"><span></span><span></span><span></span></div></div>`;m.appendChild(d);m.scrollTop=m.scrollHeight;}
+function bRemTyp(){const e=document.getElementById('btyp');if(e)e.remove();}
+async function bsend(){const i=document.getElementById('botin'),t=i.value.trim();if(!t)return;i.value='';bAddUser(t);document.getElementById('botsnd').disabled=true;bAddTyp();await new Promise(r=>setTimeout(r,500+Math.random()*400));bRemTyp();bAddAI(luna(t));document.getElementById('botsnd').disabled=false;}
+function bkey(e){if(e.key==='Enter'){e.preventDefault();bsend();}}
+function bq(q){document.getElementById('botin').value=q;bsend();}
+
+// ── DOWNLOAD ──────────────────────────────────────────────────────────
+function dlApp(){
+ const html=document.documentElement.outerHTML;
+ const blob=new Blob([html],{type:'text/html'});
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+ a.download='MoonConnectTravels_App.html';a.click();
+ toast('⬇️','App downloaded! Open in any browser — works offline too!');
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────
+function toast(icon,text){
+ const t=document.getElementById('toast');
+ document.getElementById('ti').textContent=icon;
+ document.getElementById('tt').textContent=text;
+ t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);
+}
+</script>
+
+</body></html>

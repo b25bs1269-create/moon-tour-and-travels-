@@ -1,0 +1,1814 @@
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moon Connect Travels | Premium Travel Concierge</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Dark Theme Palette (Default Premium Midnight) */
+  --bg-mid: #090f1d;
+  --bg-deep: #050911;
+  --panel: #0f182b;
+  --card: #15223c;
+  --bdr: rgba(91, 164, 245, 0.15);
+  --gold: #dfb257;
+  --gld2: #c59737;
+  --sky: #4f9ef8;
+  --sky-glow: rgba(79, 158, 248, 0.15);
+  --gold-glow: rgba(223, 178, 87, 0.15);
+  --moon: #f4ebd0;
+  --txt: #cbd5e1;
+  --wht: #f8fafc;
+  --mut: #64748b;
+  --grn: #10b981;
+  --red: #f43f5e;
+  --focus-ring: 2px solid var(--sky);
+  --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="light"] {
+  /* Light Theme Palette (Premium Alabaster & Bronze) */
+  --bg-mid: #fcfbfa;
+  --bg-deep: #f5f3ef;
+  --panel: #eae6df;
+  --card: #ffffff;
+  --bdr: rgba(184, 134, 11, 0.18);
+  --gold: #b8860b;
+  --gld2: #8b6508;
+  --sky: #20639b;
+  --sky-glow: rgba(32, 99, 155, 0.1);
+  --gold-glow: rgba(184, 134, 11, 0.1);
+  --moon: #e6dfd3;
+  --txt: #334155;
+  --wht: #0f172a;
+  --mut: #475569;
+  --grn: #059669;
+  --red: #e11d48;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-mid);
+  color: var(--txt);
+  overflow: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Background Atmosphere */
+#bg-img {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.12;
+  transition: opacity 1s ease, background-image 0.5s ease;
+  pointer-events: none;
+}
+
+#bg-ov {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(5,9,17,0.85) 0%, var(--bg-mid) 100%);
+  pointer-events: none;
+}
+
+/* App Shell Layout */
+#app {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: 70px 1fr;
+  height: 100vh;
+}
+
+/* Header styling */
+#hdr {
+  grid-column: 1 / -1;
+  background: rgba(var(--panel), 0.9);
+  border-bottom: 1px solid var(--bdr);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  backdrop-filter: blur(20px);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-moon {
+  width: 38px;
+  height: 38px;
+  background: radial-gradient(circle at 30% 30%, var(--moon), var(--gold));
+  border-radius: 50%;
+  box-shadow: 0 0 15px var(--gold-glow);
+  flex-shrink: 0;
+}
+
+.logo-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--wht), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.logo-sub {
+  font-size: 9px;
+  color: var(--mut);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.hdr-r {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Utility Widgets */
+.ctrl-widget {
+  background: var(--panel);
+  border: 1px solid var(--bdr);
+  border-radius: 8px;
+  padding: 6px 12px;
+  color: var(--wht);
+  font-size: 12px;
+  outline: none;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+.ctrl-widget:focus {
+  border-color: var(--sky);
+}
+
+/* Sidebar styling */
+#sb {
+  background: rgba(var(--panel), 0.95);
+  border-right: 1px solid var(--bdr);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  backdrop-filter: blur(15px);
+  z-index: 100;
+}
+
+.sb-s {
+  padding: 16px;
+  border-bottom: 1px solid var(--bdr);
+}
+
+.sb-t {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--mut);
+  margin-bottom: 12px;
+}
+
+.nb {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  color: var(--txt);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 10px 14px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: var(--transition-smooth);
+  margin-bottom: 4px;
+}
+
+.nb:hover {
+  background: var(--card);
+  color: var(--wht);
+}
+
+.nb.active {
+  background: var(--sky-glow);
+  color: var(--sky);
+  border-color: rgba(79, 158, 248, 0.3);
+}
+
+.dl {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  flex: 1;
+  padding: 12px;
+}
+
+.dc {
+  background: var(--card);
+  border: 1px solid var(--bdr);
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dc:hover {
+  border-color: var(--sky);
+  transform: translateX(4px);
+}
+
+.dc .dn {
+  color: var(--wht);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.dc .dp {
+  color: var(--gold);
+  font-size: 11px;
+}
+
+/* Main Panel and Navigation Tabs */
+#main {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#tabbar {
+  display: flex;
+  border-bottom: 1px solid var(--bdr);
+  background: rgba(var(--panel), 0.85);
+  padding: 0 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+#tabbar::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--mut);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 18px 16px;
+  border-bottom: 3px solid transparent;
+  transition: var(--transition-smooth);
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: var(--txt);
+}
+
+.tab.active {
+  color: var(--sky);
+  border-bottom-color: var(--sky);
+}
+
+.panel {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.panel.active {
+  display: flex;
+}
+
+.si {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  scrollbar-width: thin;
+}
+
+.pt {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--wht);
+  margin-bottom: 4px;
+}
+
+.ps {
+  font-size: 13px;
+  color: var(--mut);
+  margin-bottom: 20px;
+}
+
+/* Destination Cards Grid */
+.dg {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.dcard {
+  background: var(--card);
+  border: 1px solid var(--bdr);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: var(--transition-smooth);
+  position: relative;
+}
+
+.dcard:hover {
+  transform: translateY(-6px);
+  border-color: var(--sky);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+}
+
+.dphoto {
+  height: 165px;
+  position: relative;
+  overflow: hidden;
+  background: var(--panel);
+}
+
+.dphoto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.dcard:hover .dphoto img {
+  transform: scale(1.06);
+}
+
+.dphoto-ov {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.8) 100%);
+}
+
+.dphoto-em {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 22px;
+}
+
+.dphoto-price {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.dphoto-nights {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(0,0,0,0.7);
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+
+.dbody {
+  padding: 16px;
+}
+
+.dname {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--wht);
+}
+
+.dcountry {
+  font-size: 11px;
+  color: var(--mut);
+  margin-top: 2px;
+  margin-bottom: 10px;
+}
+
+.dtags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.dtag {
+  background: var(--panel);
+  font-size: 10px;
+  color: var(--sky);
+  padding: 2px 8px;
+  border-radius: 20px;
+  border: 1px solid var(--bdr);
+}
+
+.dfooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Buttons */
+.btn-p {
+  background: linear-gradient(135deg, var(--gold), var(--gld2));
+  color: #111;
+  font-weight: 700;
+  font-size: 11px;
+  font-family: inherit;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+.btn-p:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--gold-glow);
+}
+
+.btn-s {
+  background: var(--sky-glow);
+  color: var(--sky);
+  border: 1px solid rgba(79, 158, 248, 0.3);
+  font-weight: 600;
+  font-size: 11px;
+  font-family: inherit;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+.btn-s:hover {
+  background: var(--sky);
+  color: #fff;
+}
+
+.fav-btn {
+  background: none;
+  border: none;
+  color: var(--mut);
+  cursor: pointer;
+  font-size: 16px;
+  transition: var(--transition-smooth);
+}
+.fav-btn.active {
+  color: var(--red);
+}
+
+/* Flight and Hotel Search Panel UI */
+.fsbox {
+  background: rgba(var(--panel), 0.95);
+  border: 1px solid var(--bdr);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.ttog {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.ttb {
+  background: var(--card);
+  border: 1px solid var(--bdr);
+  color: var(--txt);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.ttb.active {
+  background: var(--sky-glow);
+  color: var(--sky);
+  border-color: var(--sky);
+}
+
+.frow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr 1fr;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 12px;
+}
+
+.frow2 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  align-items: end;
+}
+
+.fi {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fi label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--mut);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.fi input, .fi select {
+  background: var(--card);
+  border: 1px solid var(--bdr);
+  color: var(--wht);
+  font-family: inherit;
+  font-size: 13px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  outline: none;
+  width: 100%;
+  transition: var(--transition-smooth);
+}
+.fi input:focus, .fi select:focus {
+  border-color: var(--sky);
+}
+
+.swpbtn {
+  background: var(--card);
+  border: 1px solid var(--bdr);
+  color: var(--sky);
+  height: 38px;
+  width: 38px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-smooth);
+}
+.swpbtn:hover {
+  background: var(--sky-glow);
+  transform: rotate(180deg);
+}
+
+/* Flight Results styling */
+.fcard {
+  background: var(--card);
+  border: 1px solid var(--bdr);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 10px;
+  transition: var(--transition-smooth);
+}
+
+.fcard:hover {
+  border-color: var(--sky);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.alogo {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: var(--panel);
+}
+
+.frt {
+  flex: 1;
+}
+
+.ftimes {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.fdep, .farr {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--wht);
+}
+
+.fline {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fline-bar {
+  height: 1px;
+  background: var(--bdr);
+  width: 100%;
+  position: relative;
+}
+
+.fline-bar::after {
+  content: '✈';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: var(--sky);
+}
+
+.fdur {
+  font-size: 10px;
+  color: var(--mut);
+  margin-bottom: 2px;
+}
+
+.fstops {
+  font-size: 10px;
+  margin-top: 2px;
+}
+
+.fcities {
+  font-size: 11px;
+  color: var(--mut);
+}
+
+.fpbox {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.fprice {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+/* Package Builder & Step Tracker */
+.pb-tracker {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.pb-tracker::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--bdr);
+  z-index: 1;
+}
+
+.pb-track-step {
+  position: relative;
+  z-index: 2;
+  background: var(--bg-mid);
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 10px;
+  color: var(--mut);
+}
+
+.pb-track-num {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--panel);
+  border: 2px solid var(--bdr);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--txt);
+  transition: var(--transition-smooth);
+}
+
+.pb-track-step.active .pb-track-num {
+  border-color: var(--sky);
+  color: var(--sky);
+  background: var(--sky-glow);
+}
+
+.pb {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 20px;
+}
+
+.scard {
+  background: var(--card);
+  border: 1px solid var(--bdr);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.ogrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.obtn {
+  background: var(--panel);
+  border: 1px solid var(--bdr);
+  border-radius: 10px;
+  padding: 12px 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: var(--transition-smooth);
+}
+
+.obtn:hover {
+  border-color: var(--sky);
+}
+
+.obtn.sel {
+  border-color: var(--gold);
+  background: var(--gold-glow);
+}
+
+.oem {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.oname {
+  font-size: 11px;
+  color: var(--wht);
+  font-weight: 600;
+}
+
+.osub {
+  font-size: 10px;
+  color: var(--gold);
+  margin-top: 2px;
+}
+
+/* Chat Assistant Panel */
+#chatmsgs {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.msg {
+  display: flex;
+  gap: 12px;
+  max-width: 80%;
+}
+
+.msg.user {
+  flex-direction: row-reverse;
+  margin-left: auto;
+}
+
+.av {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.av.ai {
+  background: var(--sky);
+  color: #fff;
+}
+
+.av.user {
+  background: var(--gold);
+  color: #111;
+}
+
+.bub {
+  background: var(--card);
+  border: 1px solid var(--bdr);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.bub.user {
+  background: var(--sky);
+  color: #fff;
+  border: none;
+}
+
+/* Floating Bot styling */
+#fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--gld2));
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 15px var(--gold-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  transition: var(--transition-smooth);
+}
+
+#botwin {
+  position: fixed;
+  bottom: 92px;
+  right: 24px;
+  z-index: 999;
+  width: 350px;
+  height: 500px;
+  background: rgba(var(--panel), 0.98);
+  border: 1px solid var(--bdr);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+  transition: var(--transition-smooth);
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+}
+
+#botwin.open {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+/* Toast System */
+#toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  z-index: 2000;
+  background: var(--card);
+  border: 1px solid var(--bdr);
+  border-radius: 10px;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.35);
+  opacity: 0;
+  transition: var(--transition-smooth);
+  pointer-events: none;
+}
+
+#toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* Skeleton loader style */
+.skeleton {
+  background: linear-gradient(90deg, var(--panel) 25%, var(--card) 50%, var(--panel) 75%);
+  background-size: 200% 100%;
+  animation: loading-shimmer 1.5s infinite;
+  height: 80px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+@keyframes loading-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  #app {
+    grid-template-columns: 1fr;
+    grid-template-rows: 70px auto 1fr;
+  }
+  #sb {
+    display: none; /* Can be triggered via hamburger menu in a production scenario */
+  }
+  .pb {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .frow, .frow2 {
+    grid-template-columns: 1fr;
+  }
+  .swpbtn {
+    align-self: center;
+  }
+}
+</style>
+</head>
+<body>
+
+<div id="bg-img"></div>
+<div id="bg-ov"></div>
+
+<div id="app">
+  <!-- HEADER -->
+  <header id="hdr" role="banner">
+    <div class="logo">
+      <div class="logo-moon" aria-hidden="true"></div>
+      <div>
+        <h1 class="logo-text">Moon Connect Travels</h1>
+        <div class="logo-sub">Premium Travel Concierge</div>
+      </div>
+    </div>
+    <div class="hdr-r">
+      <select class="ctrl-widget" id="currency-select" onchange="changeCurrency(this.value)" aria-label="Select Currency">
+        <option value="INR">INR (₹)</option>
+        <option value="USD">USD ($)</option>
+        <option value="EUR">EUR (€)</option>
+      </select>
+      <button class="ctrl-widget" onclick="toggleTheme()" aria-label="Toggle Theme">🌓 Theme</button>
+      <button class="btn-p" onclick="downloadOfflineApp()">⬇ Download Client</button>
+    </div>
+  </header>
+
+  <!-- SIDEBAR (Collapsible for Desktop layout) -->
+  <aside id="sb" role="navigation" aria-label="Sidebar Navigation">
+    <div class="sb-s">
+      <div class="sb-t">Main Menu</div>
+      <button class="nb active" onclick="navigate('chat', this)"><span class="ni">💬</span> AI Concierge</button>
+      <button class="nb" onclick="navigate('dest', this)"><span class="ni">🌍</span> Explore</button>
+      <button class="nb" onclick="navigate('flights', this)"><span class="ni">✈️</span> Flight Deck</button>
+      <button class="nb" onclick="navigate('hotels', this)"><span class="ni">🏨</span> Accommodations</button>
+      <button class="nb" onclick="navigate('customize', this)"><span class="ni">🎨</span> Bespoke Builder</button>
+      <button class="nb" onclick="navigate('book', this)"><span class="ni">📋</span> Request Quote</button>
+    </div>
+    <div class="sb-s" style="flex:1; display:flex; flex-direction:column; overflow:hidden">
+      <div class="sb-t">Saved Favorites</div>
+      <div class="dl" id="wishlist-container"><div style="font-size:11px; color:var(--mut); text-align:center; padding:10px;">No saved items.</div></div>
+    </div>
+  </aside>
+
+  <!-- MAIN APP WINDOW -->
+  <main id="main">
+    <div id="tabbar" role="tablist">
+      <button class="tab active" role="tab" aria-selected="true" onclick="navigate('chat')">💬 Concierge</button>
+      <button class="tab" role="tab" aria-selected="false" onclick="navigate('dest')">🌍 Explore</button>
+      <button class="tab" role="tab" aria-selected="false" onclick="navigate('flights')">✈️ Flights</button>
+      <button class="tab" role="tab" aria-selected="false" onclick="navigate('hotels')">🏨 Hotels</button>
+      <button class="tab" role="tab" aria-selected="false" onclick="navigate('customize')">🎨 Bespoke</button>
+      <button class="tab" role="tab" aria-selected="false" onclick="navigate('book')">📋 Request</button>
+    </div>
+
+    <!-- PANEL: CHAT -->
+    <section class="panel active" id="chat-panel" role="tabpanel">
+      <div id="chatmsgs"><div class="msg">
+    <div class="av ai">🌙</div>
+    <div class="bub">Luna Concierge initialized. Ready to schedule journeys.</div>
+  </div></div>
+      <div style="padding: 16px; border-top: 1px solid var(--bdr); display: flex; gap: 8px;">
+        <input type="text" id="chat-input" class="fi" style="background:var(--card)" placeholder="Ask Luna about destinations, visas, or packages..." onkeydown="handleChatKey(event)">
+        <button class="btn-p" onclick="submitChatMessage()">Send</button>
+      </div>
+    </section>
+
+    <!-- PANEL: EXPLORE DESTINATIONS -->
+    <section class="panel" id="dest-panel" role="tabpanel">
+      <div class="si">
+        <h2 class="pt">Explore Handpicked Destinations</h2>
+        <div class="ps">Premium global escapes accompanied by real-time details and direct booking paths.</div>
+        <div class="dg" id="destgrid">
+      <article class="dcard">
+        <div class="dphoto">
+          <img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=500&amp;q=80" alt="Goa" loading="lazy">
+          <div class="dphoto-ov"></div>
+          <div class="dphoto-em">🏖️</div>
+          <div class="dphoto-price">₹15,000</div>
+          <div class="dphoto-nights">4N/5D</div>
+        </div>
+        <div class="dbody">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3 class="dname">Goa</h3>
+            <button class="fav-btn " onclick="toggleWishlist('goa')" aria-label="Toggle wishlist selection">★</button>
+          </div>
+          <div class="dcountry">📍 India · Weather: Sunny, 28°C</div>
+          <div class="dtags"><span class="dtag">Beach</span><span class="dtag">Nightlife</span></div>
+          <div class="dfooter">
+            <button class="btn-s" onclick="inspectDestination('Goa')">Query Assistant</button>
+            <button class="btn-p" onclick="navigate('book')">Enquire</button>
+          </div>
+        </div>
+      </article>
+    
+      <article class="dcard">
+        <div class="dphoto">
+          <img src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=500&amp;q=80" alt="Maldives" loading="lazy">
+          <div class="dphoto-ov"></div>
+          <div class="dphoto-em">🐠</div>
+          <div class="dphoto-price">₹65,000</div>
+          <div class="dphoto-nights">4N/5D</div>
+        </div>
+        <div class="dbody">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3 class="dname">Maldives</h3>
+            <button class="fav-btn " onclick="toggleWishlist('maldives')" aria-label="Toggle wishlist selection">★</button>
+          </div>
+          <div class="dcountry">📍 Maldives · Weather: Tropical, 30°C</div>
+          <div class="dtags"><span class="dtag">Luxury</span><span class="dtag">Resort</span></div>
+          <div class="dfooter">
+            <button class="btn-s" onclick="inspectDestination('Maldives')">Query Assistant</button>
+            <button class="btn-p" onclick="navigate('book')">Enquire</button>
+          </div>
+        </div>
+      </article>
+    
+      <article class="dcard">
+        <div class="dphoto">
+          <img src="https://images.unsplash.com/photo-1477587458883-47145ed94245?w=500&amp;q=80" alt="Jaipur" loading="lazy">
+          <div class="dphoto-ov"></div>
+          <div class="dphoto-em">🏰</div>
+          <div class="dphoto-price">₹18,000</div>
+          <div class="dphoto-nights">5N/6D</div>
+        </div>
+        <div class="dbody">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3 class="dname">Jaipur</h3>
+            <button class="fav-btn " onclick="toggleWishlist('jaipur')" aria-label="Toggle wishlist selection">★</button>
+          </div>
+          <div class="dcountry">📍 India · Weather: Clear, 22°C</div>
+          <div class="dtags"><span class="dtag">Heritage</span><span class="dtag">Palaces</span></div>
+          <div class="dfooter">
+            <button class="btn-s" onclick="inspectDestination('Jaipur')">Query Assistant</button>
+            <button class="btn-p" onclick="navigate('book')">Enquire</button>
+          </div>
+        </div>
+      </article>
+    
+      <article class="dcard">
+        <div class="dphoto">
+          <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=500&amp;q=80" alt="Dubai" loading="lazy">
+          <div class="dphoto-ov"></div>
+          <div class="dphoto-em">🏙️</div>
+          <div class="dphoto-price">₹55,000</div>
+          <div class="dphoto-nights">4N/5D</div>
+        </div>
+        <div class="dbody">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3 class="dname">Dubai</h3>
+            <button class="fav-btn " onclick="toggleWishlist('dubai')" aria-label="Toggle wishlist selection">★</button>
+          </div>
+          <div class="dcountry">📍 UAE · Weather: Sunny, 35°C</div>
+          <div class="dtags"><span class="dtag">Modern</span><span class="dtag">Shopping</span></div>
+          <div class="dfooter">
+            <button class="btn-s" onclick="inspectDestination('Dubai')">Query Assistant</button>
+            <button class="btn-p" onclick="navigate('book')">Enquire</button>
+          </div>
+        </div>
+      </article>
+    </div>
+      </div>
+    </section>
+
+    <!-- PANEL: FLIGHTS -->
+    <section class="panel" id="flights-panel" role="tabpanel">
+      <div class="si">
+        <h2 class="pt">Flight Deck Query Engine</h2>
+        <div class="ps">Real-time mock airlines availability processing and rate validation.</div>
+        <div class="fsbox">
+          <div class="frow">
+            <div class="fi">
+              <label for="f-from">Departure Airport</label>
+              <select id="f-from">
+                <option value="DEL">Delhi (DEL)</option>
+                <option value="BOM">Mumbai (BOM)</option>
+                <option value="BLR">Bangalore (BLR)</option>
+              </select>
+            </div>
+            <button class="swpbtn" onclick="swapAirports()" aria-label="Swap airports">⇄</button>
+            <div class="fi">
+              <label for="f-to">Arrival Airport</label>
+              <select id="f-to">
+                <option value="DXB">Dubai (DXB)</option>
+                <option value="SIN">Singapore (SIN)</option>
+                <option value="MLE">Maldives (MLE)</option>
+              </select>
+            </div>
+            <div class="fi">
+              <label for="f-date">Travel Date</label>
+              <input type="date" id="f-date" min="2026-05-28">
+            </div>
+          </div>
+          <div class="frow2">
+            <div class="fi">
+              <label for="f-cabin">Cabin Class</label>
+              <select id="f-cabin">
+                <option value="econ">Economy</option>
+                <option value="biz">Business</option>
+                <option value="first">First Class</option>
+              </select>
+            </div>
+            <button class="btn-p" style="grid-column: span 3; height: 38px;" onclick="runFlightSearch()">Query Routing Rates</button>
+          </div>
+        </div>
+        <div id="flight-results"></div>
+      </div>
+    </section>
+
+    <!-- PANEL: HOTELS -->
+    <section class="panel" id="hotels-panel" role="tabpanel">
+      <div class="si">
+        <h2 class="pt">Acquisitions &amp; Accommodations</h2>
+        <div class="ps">Direct premium property interfaces with real-time rate validation rules.</div>
+        <div class="fsbox">
+          <div class="frow">
+            <div class="fi">
+              <label for="h-destination">City / Destination</label>
+              <select id="h-destination">
+                <option value="Goa">Goa</option>
+                <option value="Maldives">Maldives</option>
+                <option value="Jaipur">Jaipur</option>
+                <option value="Dubai">Dubai</option>
+              </select>
+            </div>
+            <div class="fi">
+              <label for="h-checkin">Check-in</label>
+              <input type="date" id="h-checkin" min="2026-05-28">
+            </div>
+            <div class="fi">
+              <label for="h-checkout">Check-out</label>
+              <input type="date" id="h-checkout" min="2026-05-28">
+            </div>
+            <button class="btn-p" style="height:38px" onclick="runHotelSearch()">Scan Architecture</button>
+          </div>
+        </div>
+        <div class="dg" id="hotel-results"></div>
+      </div>
+    </section>
+
+    <!-- PANEL: BESPOKE PACKAGE BUILDER -->
+    <section class="panel" id="customize-panel" role="tabpanel">
+      <div class="si">
+        <h2 class="pt">Bespoke Package Designer</h2>
+        <div class="ps">Generate complete, custom-tailored travel workflows matched to structured budget constraints.</div>
+        <div class="pb-tracker">
+          <div class="pb-track-step active" id="track-step-1"><div class="pb-track-num">1</div>Destination</div>
+          <div class="pb-track-step" id="track-step-2"><div class="pb-track-num">2</div>Duration</div>
+          <div class="pb-track-step" id="track-step-3"><div class="pb-track-num">3</div>Accommodations</div>
+          <div class="pb-track-step" id="track-step-4"><div class="pb-track-num">4</div>Confirmation</div>
+        </div>
+        <div class="pb">
+          <div id="builder-steps-container">
+    <div class="scard" style="margin-bottom:16px">
+      <h3 style="margin-bottom:12px">1. Select Primary Destination</h3>
+      <div class="ogrid">
+        
+          <button class="obtn" id="opt-dest-goa" onclick="selectBuilderOption('dest', 'goa', 15000, 'Goa Coastline')">
+            <div class="oem">🏖️</div>
+            <div class="oname">Goa Coastline</div>
+            <div class="osub">+₹15,000</div>
+          </button>
+        
+          <button class="obtn" id="opt-dest-mld" onclick="selectBuilderOption('dest', 'mld', 55000, 'Maldives Atoll')">
+            <div class="oem">🐠</div>
+            <div class="oname">Maldives Atoll</div>
+            <div class="osub">+₹55,000</div>
+          </button>
+        
+          <button class="obtn" id="opt-dest-jp" onclick="selectBuilderOption('dest', 'jp', 18000, 'Royal Jaipur')">
+            <div class="oem">🏰</div>
+            <div class="oname">Royal Jaipur</div>
+            <div class="osub">+₹18,000</div>
+          </button>
+        
+      </div>
+    </div>
+  
+    <div class="scard" style="margin-bottom:16px">
+      <h3 style="margin-bottom:12px">2. Select Duration Tier</h3>
+      <div class="ogrid">
+        
+          <button class="obtn" id="opt-dur-tier-1" onclick="selectBuilderOption('dur', 'tier-1', 8000, 'Weeklong Access (7 Days)')">
+            <div class="oem">🌅</div>
+            <div class="oname">Weeklong Access (7 Days)</div>
+            <div class="osub">+₹8,000</div>
+          </button>
+        
+          <button class="obtn" id="opt-dur-tier-2" onclick="selectBuilderOption('dur', 'tier-2', 0, 'Standard Escape (4 Days)')">
+            <div class="oem">🌄</div>
+            <div class="oname">Standard Escape (4 Days)</div>
+            <div class="osub">Base Inclusions</div>
+          </button>
+        
+      </div>
+    </div>
+  
+    <div class="scard" style="margin-bottom:16px">
+      <h3 style="margin-bottom:12px">3. Acquisition Architecture</h3>
+      <div class="ogrid">
+        
+          <button class="obtn" id="opt-hotel-hp-5" onclick="selectBuilderOption('hotel', 'hp-5', 25000, 'Ultra Luxury Estate')">
+            <div class="oem">💎</div>
+            <div class="oname">Ultra Luxury Estate</div>
+            <div class="osub">+₹25,000</div>
+          </button>
+        
+          <button class="obtn" id="opt-hotel-hp-4" onclick="selectBuilderOption('hotel', 'hp-4', 10000, 'Standard Suite Base')">
+            <div class="oem">🏢</div>
+            <div class="oname">Standard Suite Base</div>
+            <div class="osub">+₹10,000</div>
+          </button>
+        
+      </div>
+    </div>
+  </div>
+          <!-- Summary card -->
+          <div class="scard" style="border-color: var(--gold)">
+            <h3>Configuration Summary</h3>
+            <div id="builder-summary-rows" style="margin: 16px 0;"></div>
+            <div style="display:flex; justify-content:space-between; margin-bottom: 16px;">
+              <span>Total Price Estimation:</span>
+              <strong id="builder-total-price" style="color:var(--gold)">--</strong>
+            </div>
+            <button class="btn-p" style="width:100%" onclick="submitBespokePackage()">Proceed with Config</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL: REQUEST AN INQUIRY -->
+    <section class="panel" id="book-panel" role="tabpanel">
+      <div class="si">
+        <h2 class="pt">Inquiry System</h2>
+        <div class="ps">Initiate contact workflows for human agent processing and execution.</div>
+        <form id="inquiry-form" onsubmit="handleInquirySubmission(event)" style="display:grid; gap: 16px; max-width: 600px;">
+          <div class="fi">
+            <label for="inq-name">Full Legal Name</label>
+            <input type="text" id="inq-name" required="" placeholder="John Doe">
+          </div>
+          <div class="fi">
+            <label for="inq-phone">Contact Number (WhatsApp enabled)</label>
+            <input type="tel" id="inq-phone" required="" placeholder="+91 99999 99999">
+          </div>
+          <div class="fi">
+            <label for="inq-dest">Target Destination</label>
+            <select id="inq-dest">
+              <option value="Goa">Goa</option>
+              <option value="Maldives">Maldives</option>
+              <option value="Bali">Bali</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-p">Submit Registration</button>
+        </form>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- FLOATING BOT -->
+<button id="fab" onclick="toggleFloatingBot()" aria-label="Open support chat">🌙</button>
+<div id="botwin" aria-live="polite">
+  <div style="background:var(--panel); padding: 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--bdr)">
+    <strong style="font-size:12px; color:var(--wht)">Luna Support Engine</strong>
+    <button onclick="toggleFloatingBot()" style="background:none; border:none; color:var(--mut); cursor:pointer">✕</button>
+  </div>
+  <div id="botmsgs" style="flex:1; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:8px;"><div class="msg">
+    <div class="av ai">🌙</div>
+    <div class="bub">Standard floating assistant ready.</div>
+  </div></div>
+  <div style="padding: 8px; display:flex; gap: 4px; border-top:1px solid var(--bdr)">
+    <input type="text" id="bot-input" class="fi" style="background:var(--card)" placeholder="Ask support..." onkeydown="handleBotKey(event)">
+    <button class="btn-p" onclick="submitBotMessage()">Send</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" role="status" aria-live="polite"><span id="toast-icon">✅</span> <span id="toast-text">Success</span></div>
+
+<script>
+// --- GLOBAL REACTIVE PLATFORM STATE ---
+const AppState = {
+  theme: 'dark',
+  currency: 'INR',
+  currencySymbol: '₹',
+  conversionRate: 1.0,
+  wishlist: JSON.parse(localStorage.getItem('mct_wishlist')) || [],
+  recentlyViewed: JSON.parse(localStorage.getItem('mct_recent')) || [],
+  selectedPackageOptions: {
+    dest: null,
+    dur: null,
+    hotel: null
+  }
+};
+
+const CURRENCY_CONVERSIONS = {
+  INR: { symbol: '₹', rate: 1.0 },
+  USD: { symbol: '$', rate: 0.012 },
+  EUR: { symbol: '€', rate: 0.011 }
+};
+
+const DEST_DB = [
+  { id: 'goa', name: 'Goa', country: 'India', basePrice: 15000, nights: '4N/5D', em: '🏖️', tags: ['Beach', 'Nightlife'], bgImg: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=500&q=80', weather: 'Sunny, 28°C' },
+  { id: 'maldives', name: 'Maldives', country: 'Maldives', basePrice: 65000, nights: '4N/5D', em: '🐠', tags: ['Luxury', 'Resort'], bgImg: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=500&q=80', weather: 'Tropical, 30°C' },
+  { id: 'jaipur', name: 'Jaipur', country: 'India', basePrice: 18000, nights: '5N/6D', em: '🏰', tags: ['Heritage', 'Palaces'], bgImg: 'https://images.unsplash.com/photo-1477587458883-47145ed94245?w=500&q=80', weather: 'Clear, 22°C' },
+  { id: 'dubai', name: 'Dubai', country: 'UAE', basePrice: 55000, nights: '4N/5D', em: '🏙️', tags: ['Modern', 'Shopping'], bgImg: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=500&q=80', weather: 'Sunny, 35°C' }
+];
+
+const HOTEL_DB = [
+  { id: 'ht-1', name: 'Taj Exotica Resort', city: 'Goa', price: 18500, stars: 5, tags: ['Beachfront', 'Luxury'] },
+  { id: 'ht-2', name: 'W Goa Premium Luxury', city: 'Goa', price: 22000, stars: 5, tags: ['Vagator', 'Music'] },
+  { id: 'ht-3', name: 'Soneva Fushi Island', city: 'Maldives', price: 95000, stars: 5, tags: ['Overwater', 'Wellness'] },
+  { id: 'ht-4', name: 'Rambagh Palace Estates', city: 'Jaipur', price: 38000, stars: 5, tags: ['Royal', 'Heritage'] }
+];
+
+// --- INITIALIZATION ---
+window.addEventListener('DOMContentLoaded', () => {
+  initializeDates();
+  renderDestinations();
+  renderWishlist();
+  renderPackageBuilder();
+  pushSystemMessage('chatmsgs', 'Luna Concierge initialized. Ready to schedule journeys.');
+  pushSystemMessage('botmsgs', 'Standard floating assistant ready.');
+});
+
+function initializeDates() {
+  const today = new Date().toISOString().split('T')[0];
+  ['f-date', 'h-checkin', 'h-checkout'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.min = today;
+      el.value = today;
+    }
+  });
+}
+
+// --- SECURE RENDER UTIL (Anti-XSS Protection) ---
+function sanitizeHTML(str) {
+  const temp = document.createElement('div');
+  temp.textContent = str;
+  return temp.innerHTML;
+}
+
+// --- NOTIFICATION UTILS ---
+function showNotification(text, isError = false) {
+  const t = document.getElementById('toast');
+  const tIcon = document.getElementById('toast-icon');
+  const tText = document.getElementById('toast-text');
+  tIcon.textContent = isError ? '⚠️' : '✅';
+  tText.textContent = text;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+// --- DATA REPRESENTATION CONVERTER ---
+function formatCurrency(val) {
+  const convertedValue = Math.round(val * AppState.conversionRate);
+  return `${AppState.currencySymbol}${convertedValue.toLocaleString()}`;
+}
+
+function changeCurrency(val) {
+  if (!CURRENCY_CONVERSIONS[val]) return;
+  AppState.currency = val;
+  AppState.currencySymbol = CURRENCY_CONVERSIONS[val].symbol;
+  AppState.conversionRate = CURRENCY_CONVERSIONS[val].rate;
+  
+  renderDestinations();
+  renderWishlist();
+  updateBuilderDisplay();
+  showNotification(`Rates updated to ${val}`);
+}
+
+function toggleTheme() {
+  AppState.theme = AppState.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', AppState.theme);
+  showNotification(`Luxury display set to ${AppState.theme} mode`);
+}
+
+// --- PERSISTENT WISHLIST SYSTEM ---
+function toggleWishlist(destId) {
+  const index = AppState.wishlist.indexOf(destId);
+  if (index === -1) {
+    AppState.wishlist.push(destId);
+    showNotification('Destination pinned to saved favorites');
+  } else {
+    AppState.wishlist.splice(index, 1);
+    showNotification('Destination released from favorites');
+  }
+  localStorage.setItem('mct_wishlist', JSON.stringify(AppState.wishlist));
+  renderDestinations();
+  renderWishlist();
+}
+
+function renderWishlist() {
+  const container = document.getElementById('wishlist-container');
+  if (AppState.wishlist.length === 0) {
+    container.innerHTML = `<div style="font-size:11px; color:var(--mut); text-align:center; padding:10px;">No saved items.</div>`;
+    return;
+  }
+  container.innerHTML = AppState.wishlist.map(id => {
+    const d = DEST_DB.find(item => item.id === id);
+    if (!d) return '';
+    return `
+      <div class="dc" onclick="inspectDestination('${d.name}')">
+        <span>${d.em}</span>
+        <div>
+          <div class="dn">${sanitizeHTML(d.name)}</div>
+          <div class="dp">From ${formatCurrency(d.basePrice)}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// --- TAB NAVIGATION CORE ---
+function navigate(panelId, btnElement = null) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('active'));
+
+  const targetPanel = document.getElementById(`${panelId}-panel`);
+  if (targetPanel) targetPanel.classList.add('active');
+
+  if (btnElement) {
+    btnElement.classList.add('active');
+  } else {
+    // Attempt fallback tab bar activation mapping
+    const matchTab = Array.from(document.querySelectorAll('.tab')).find(t => t.textContent.toLowerCase().includes(panelId));
+    if (matchTab) matchTab.classList.add('active');
+  }
+}
+
+// --- DYNAMIC RENDERING (Explore Section) ---
+function renderDestinations() {
+  const grid = document.getElementById('destgrid');
+  grid.innerHTML = DEST_DB.map(d => {
+    const isFav = AppState.wishlist.includes(d.id);
+    return `
+      <article class="dcard">
+        <div class="dphoto">
+          <img src="${d.bgImg}" alt="${sanitizeHTML(d.name)}" loading="lazy">
+          <div class="dphoto-ov"></div>
+          <div class="dphoto-em">${d.em}</div>
+          <div class="dphoto-price">${formatCurrency(d.basePrice)}</div>
+          <div class="dphoto-nights">${d.nights}</div>
+        </div>
+        <div class="dbody">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3 class="dname">${sanitizeHTML(d.name)}</h3>
+            <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleWishlist('${d.id}')" aria-label="Toggle wishlist selection">★</button>
+          </div>
+          <div class="dcountry">📍 ${sanitizeHTML(d.country)} · Weather: ${d.weather}</div>
+          <div class="dtags">${d.tags.map(t => `<span class="dtag">${sanitizeHTML(t)}</span>`).join('')}</div>
+          <div class="dfooter">
+            <button class="btn-s" onclick="inspectDestination('${d.name}')">Query Assistant</button>
+            <button class="btn-p" onclick="navigate('book')">Enquire</button>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+function inspectDestination(name) {
+  navigate('chat');
+  pushUserMessage('chatmsgs', `Requesting profile summary for ${name}`);
+  simulateAIResponse('chatmsgs', `Analyzing target: <strong>${sanitizeHTML(name)}</strong>. Checking atmospheric and weather patterns, regional logistics constraints, and currency adjustments. Let's build a bespoke roadmap.`);
+}
+
+// --- FLIGHT BOOKING LOGIC ---
+function runFlightSearch() {
+  const results = document.getElementById('flight-results');
+  results.innerHTML = `
+    <div class="skeleton"></div>
+    <div class="skeleton"></div>
+  `;
+  setTimeout(() => {
+    const from = document.getElementById('f-from').value;
+    const to = document.getElementById('f-to').value;
+    if (from === to) {
+      results.innerHTML = `<div style="color:var(--red)">Origin and target destinations cannot align.</div>`;
+      return;
+    }
+    // Static Premium Selection Generation
+    results.innerHTML = `
+      <div class="fcard">
+        <div class="alogo">✈️</div>
+        <div class="frt">
+          <div class="ftimes">
+            <span class="fdep">08:00</span>
+            <div class="fline">
+              <span class="fdur">4h 15m</span>
+              <div class="fline-bar"></div>
+            </div>
+            <span class="farr">12:15</span>
+          </div>
+          <div class="fcities">${from} &rarr; ${to} · Direct Premium Flight</div>
+        </div>
+        <div class="fpbox">
+          <div class="fprice">${formatCurrency(18500)}</div>
+          <button class="btn-p" style="margin-top:8px" onclick="confirmInboundService('Flight', '${from} to ${to}')">Book Journey</button>
+        </div>
+      </div>
+    `;
+  }, 1000);
+}
+
+function swapAirports() {
+  const fromEl = document.getElementById('f-from');
+  const toEl = document.getElementById('f-to');
+  const temp = fromEl.value;
+  fromEl.value = toEl.value;
+  toEl.value = temp;
+}
+
+// --- HOTEL SCAN ENGINE ---
+function runHotelSearch() {
+  const targetCity = document.getElementById('h-destination').value;
+  const results = document.getElementById('hotel-results');
+  results.innerHTML = `<div class="skeleton" style="grid-column: span 3"></div>`;
+  
+  setTimeout(() => {
+    const filteredHotels = HOTEL_DB.filter(h => h.city === targetCity);
+    if (filteredHotels.length === 0) {
+      results.innerHTML = `<div>No bespoke properties located within scope. Try another query.</div>`;
+      return;
+    }
+    results.innerHTML = filteredHotels.map(h => `
+      <div class="scard">
+        <h3 class="dname">${sanitizeHTML(h.name)}</h3>
+        <div class="dcountry">📍 ${sanitizeHTML(h.city)} · ${h.stars} Star Property</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
+          <span style="color:var(--gold); font-weight:700">${formatCurrency(h.price)}/night</span>
+          <button class="btn-p" onclick="confirmInboundService('Hotel Property', '${h.name}')">Book Room</button>
+        </div>
+      </div>
+    `).join('');
+  }, 900);
+}
+
+// --- TRANSACTION CONFIRMATION WINDOW ---
+function confirmInboundService(type, details) {
+  showNotification(`${type} [${details}] initialized inside global register.`);
+}
+
+// --- DYNAMIC CUSTOM BUNDLER (BESPOKE) ---
+const STEPS_DATA = [
+  {
+    stepId: 'dest',
+    title: 'Select Primary Destination',
+    items: [
+      { id: 'goa', name: 'Goa Coastline', value: 15000, em: '🏖️' },
+      { id: 'mld', name: 'Maldives Atoll', value: 55000, em: '🐠' },
+      { id: 'jp', name: 'Royal Jaipur', value: 18000, em: '🏰' }
+    ]
+  },
+  {
+    stepId: 'dur',
+    title: 'Select Duration Tier',
+    items: [
+      { id: 'tier-1', name: 'Weeklong Access (7 Days)', value: 8000, em: '🌅' },
+      { id: 'tier-2', name: 'Standard Escape (4 Days)', value: 0, em: '🌄' }
+    ]
+  },
+  {
+    stepId: 'hotel',
+    title: 'Acquisition Architecture',
+    items: [
+      { id: 'hp-5', name: 'Ultra Luxury Estate', value: 25000, em: '💎' },
+      { id: 'hp-4', name: 'Standard Suite Base', value: 10000, em: '🏢' }
+    ]
+  }
+];
+
+function renderPackageBuilder() {
+  const container = document.getElementById('builder-steps-container');
+  container.innerHTML = STEPS_DATA.map((step, idx) => `
+    <div class="scard" style="margin-bottom:16px">
+      <h3 style="margin-bottom:12px">${idx + 1}. ${sanitizeHTML(step.title)}</h3>
+      <div class="ogrid">
+        ${step.items.map(item => `
+          <button class="obtn" id="opt-${step.stepId}-${item.id}" onclick="selectBuilderOption('${step.stepId}', '${item.id}', ${item.value}, '${item.name}')">
+            <div class="oem">${item.em}</div>
+            <div class="oname">${sanitizeHTML(item.name)}</div>
+            <div class="osub">${item.value > 0 ? '+' + formatCurrency(item.value) : 'Base Inclusions'}</div>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectBuilderOption(stepId, itemId, price, name) {
+  const step = STEPS_DATA.find(s => s.stepId === stepId);
+  step.items.forEach(item => {
+    const el = document.getElementById(`opt-${stepId}-${item.id}`);
+    if (el) el.classList.remove('sel');
+  });
+
+  const selectedEl = document.getElementById(`opt-${stepId}-${itemId}`);
+  if (selectedEl) selectedEl.classList.add('sel');
+
+  AppState.selectedPackageOptions[stepId] = { name, price };
+  
+  // Dynamic step tracker adjustments
+  updateProgressTracker(stepId);
+  updateBuilderDisplay();
+}
+
+function updateProgressTracker(stepId) {
+  const stepsMap = { dest: 'track-step-1', dur: 'track-step-2', hotel: 'track-step-3' };
+  const targetId = stepsMap[stepId];
+  if (targetId) {
+    document.getElementById(targetId).classList.add('active');
+  }
+}
+
+function updateBuilderDisplay() {
+  const rows = document.getElementById('builder-summary-rows');
+  const totalPriceEl = document.getElementById('builder-total-price');
+  
+  let total = 0;
+  let html = '';
+  
+  Object.keys(AppState.selectedPackageOptions).forEach(key => {
+    const option = AppState.selectedPackageOptions[key];
+    if (option) {
+      total += option.price;
+      html += `
+        <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:8px">
+          <span style="color:var(--mut)">${key.toUpperCase()}:</span>
+          <span>${sanitizeHTML(option.name)}</span>
+        </div>
+      `;
+    }
+  });
+  
+  rows.innerHTML = html || `<div style="font-size:12px; color:var(--mut)">Configure setup above...</div>`;
+  totalPriceEl.textContent = total > 0 ? formatCurrency(total) : '--';
+}
+
+function submitBespokePackage() {
+  if (!AppState.selectedPackageOptions.dest || !AppState.selectedPackageOptions.hotel) {
+    showNotification('Complete destination and hotel configurations first.', true);
+    return;
+  }
+  document.getElementById('track-step-4').classList.add('active');
+  showNotification('Bespoke workflow registered inside general booking registry.');
+  navigate('book');
+}
+
+// --- INQUIRY SUBMISSION ---
+function handleInquirySubmission(e) {
+  e.preventDefault();
+  const name = document.getElementById('inq-name').value;
+  showNotification(`Registration Complete for ${name}. Human operators will review.`);
+  document.getElementById('inquiry-form').reset();
+}
+
+// --- CONCIERGE CHAT ENGINE & LUNA BOT ---
+const LUNA_DICTIONARY = {
+  visa: "Visa guidelines: Dubai offers Visa on Arrival for Indian Nationals (subject to current status). Maldives remains Visa on Arrival (Free for tourist stays under 30 days). Ensure 6 months validity on international passports.",
+  maldives: "Maldives represents deep oceanic luxury. Typical packages average between 45k to 95k per traveler depending on premium seaplane transit requests.",
+  goa: "Goa remains a staple coastline destination. Ideal seasons of entry run from November through early April. Expect premium luxury rentals in South Goa.",
+  help: "I can parse parameters relating to: visas, hotel profiles, specific pricing constraints, flight routes, and global seasons."
+};
+
+function submitChatMessage() {
+  const input = document.getElementById('chat-input');
+  const val = input.value.trim();
+  if (!val) return;
+
+  pushUserMessage('chatmsgs', val);
+  input.value = '';
+  
+  processConciergeIntelligence('chatmsgs', val);
+}
+
+function handleChatKey(e) {
+  if (e.key === 'Enter') submitChatMessage();
+}
+
+function submitBotMessage() {
+  const input = document.getElementById('bot-input');
+  const val = input.value.trim();
+  if (!val) return;
+
+  pushUserMessage('botmsgs', val);
+  input.value = '';
+
+  processConciergeIntelligence('botmsgs', val);
+}
+
+function handleBotKey(e) {
+  if (e.key === 'Enter') submitBotMessage();
+}
+
+function toggleFloatingBot() {
+  document.getElementById('botwin').classList.toggle('open');
+}
+
+function pushUserMessage(containerId, text) {
+  const container = document.getElementById(containerId);
+  const wrapper = document.createElement('div');
+  wrapper.className = 'msg user';
+  wrapper.innerHTML = `
+    <div class="av user">👤</div>
+    <div class="bub user">${sanitizeHTML(text)}</div>
+  `;
+  container.appendChild(wrapper);
+  container.scrollTop = container.scrollHeight;
+}
+
+function pushSystemMessage(containerId, text) {
+  const container = document.getElementById(containerId);
+  const wrapper = document.createElement('div');
+  wrapper.className = 'msg';
+  wrapper.innerHTML = `
+    <div class="av ai">🌙</div>
+    <div class="bub">${text}</div>
+  `;
+  container.appendChild(wrapper);
+  container.scrollTop = container.scrollHeight;
+}
+
+function simulateAIResponse(containerId, text) {
+  pushSystemMessage(containerId, `<div style="display:flex; gap:4px"><span>●</span><span>●</span><span>●</span></div>`);
+  const list = document.getElementById(containerId);
+  const shimmer = list.lastElementChild;
+  
+  setTimeout(() => {
+    if (shimmer) shimmer.remove();
+    pushSystemMessage(containerId, text);
+  }, 1000);
+}
+
+function processConciergeIntelligence(containerId, query) {
+  const normalizedQuery = query.toLowerCase();
+  let matches = "I've logged that data point. Please state a target query. You can ask me about 'Visa', 'Goa', 'Maldives', or 'Help' rules.";
+
+  Object.keys(LUNA_DICTIONARY).forEach(key => {
+    if (normalizedQuery.includes(key)) {
+      matches = LUNA_DICTIONARY[key];
+    }
+  });
+
+  simulateAIResponse(containerId, matches);
+}
+
+// --- CLIENT-SIDE PACKAGING WORKFLOW (STANDALONE ARCHIVE) ---
+function downloadOfflineApp() {
+  const code = document.documentElement.outerHTML;
+  const rawBlob = new Blob([code], { type: 'text/html' });
+  const temporaryLink = document.createElement('a');
+  temporaryLink.href = URL.createObjectURL(rawBlob);
+  temporaryLink.download = 'MoonConnect_OfflineClient.html';
+  temporaryLink.click();
+  showNotification('App bundle registered for offline operations.');
+}
+</script>
+
+</body></html>
